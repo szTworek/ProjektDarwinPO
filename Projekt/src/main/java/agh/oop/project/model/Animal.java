@@ -1,61 +1,34 @@
 package agh.oop.project.model;
 
+import agh.oop.project.World;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-public class Animal implements WorldElement{
-    // propozycja: Animal dajmy jako interface, większosć metod dajmy w AbstractAnimal
-    // i później będą 2 różne animale - jeden normalny a drugi z odrobiną szaleństwa
+public interface Animal extends WorldElement {
+    boolean isAt (Vector2d position);
 
-    private MapDirection direction;
-    private Vector2d position;
-    private ArrayList<Integer> genome;
-    private int nextGenome;
-    private int energy;
-    private List<Animal> children = new ArrayList<>();
+    // getters
+    MapDirection getDirection();
+    ArrayList<Integer> getGenome();
+    int getEnergy();
 
-    public Animal(Vector2d position, ArrayList<Integer> genome, int energy) {
-        Random rand = new Random();
-        // obrót startowy ma być losowy - możemy zmienić później na testy
-        this.direction = MapDirection.values()[rand.nextInt(8)];
-        this.position = position;
-        this.genome = genome;
-        // zaczynamy też od losowego genomu
-        nextGenome = rand.nextInt(genome.size());
-        this.energy = energy;
-    }
+    // moving
+    void turn(int turnAmount);
+    void move();
 
-    public Animal(Vector2d position, ArrayList<Integer> genome){
+    // sex
+    void reproduce(Animal animal, WorldMap map, Specifications specs);
+    ArrayList<Integer> newGenome(Animal animal);
+    int getDescendantAmount();
 
-        //poczatkowe zwierzeta maja full energii ale przy rozmnazaniu konieczne jest juz jej podawanie
-        this(position, genome, 100);
-    }
+    // eat
+    void eat(Specifications specs);
 
-    public String toString() {
-        return (position + " " + direction);
-    }
+    // status of animal
+    boolean isHealthy(Specifications specs);
+    boolean isDead();
 
-    boolean isAt(Vector2d position) {
-        return this.position.equals(position);
-    }
+    //genome manipulations
+    void nextGenome();
 
-    public MapDirection getDirection() {
-        return direction;
-    }
-
-    public Vector2d getPosition() {
-        return position;
-    }
-
-    public ArrayList<Integer> getGenome() {
-        return genome;
-    }
-
-    public void turn(int turnAmount) {
-        // obrót zwierzaka
-        // pierwsza częsć ruchu - można później do metody move dać
-        int i = direction.ordinal();
-        direction = MapDirection.values()[(turnAmount + i) % 8];
-    }
 }

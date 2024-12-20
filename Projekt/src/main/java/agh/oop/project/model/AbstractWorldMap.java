@@ -2,7 +2,7 @@ package agh.oop.project.model;
 
 import java.util.Map;
 
-public abstract class AbstractWorldMap implements WorldMap{
+public abstract class AbstractWorldMap implements WorldMap, Specifications{
     private Map<Vector2d,Animal> livingAnimals=new java.util.HashMap<>();
     private Map<Vector2d,Animal> deadAnimals=new java.util.HashMap<>();
     private Map<Vector2d,Plant> plants=new java.util.HashMap<>();

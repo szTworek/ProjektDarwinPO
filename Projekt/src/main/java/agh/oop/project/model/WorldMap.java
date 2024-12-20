@@ -1,6 +1,6 @@
 package agh.oop.project.model;
 
-public interface WorldMap {
+public interface WorldMap{
 
     //Place an animal on the map
     void placeAnimal(Animal animal);
@@ -17,11 +17,4 @@ public interface WorldMap {
 
     //Checks if an animal can move to a given position
     boolean canMoveTo(Animal animal, Vector2d position);
-
-
-
-    int getHeight();
-    int getWidth();
-
-
 }

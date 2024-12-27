@@ -6,7 +6,7 @@ public interface WorldMap {
 
     void placeAnimal(Animal animal, Vector2d position);
 
-    void removeAnimal(Animal animal);
+    void removeAnimals();
 
     boolean isPlantAt(Vector2d position);
 

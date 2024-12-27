@@ -5,9 +5,11 @@ import java.util.*;
 public abstract class AbstractWorldMap implements WorldMap{
     protected Map<Vector2d, List<Animal>> livingAnimals=new HashMap<>();
     protected Map<Vector2d,List<Animal>> deadAnimals=new HashMap<>();
-    protected Map<Vector2d,Plant> plants=new HashMap<Vector2d, Plant>();
+    protected Map<Vector2d,Plant> plants=new HashMap<>();
     protected Vector2d lowerLeft = new Vector2d(0,0);
     protected Vector2d upperRight ;
+    protected int height;
+    protected int width;
 
     public AbstractWorldMap(int height, int width){
         upperRight =new Vector2d(width,height) ;
@@ -20,15 +22,21 @@ public abstract class AbstractWorldMap implements WorldMap{
     }
 
     @Override
-    public void removeAnimal(Animal animal) {
-        Vector2d position = animal.getPosition();
-        List<Animal> animalsAtPosition = livingAnimals.get(position);
-        animalsAtPosition.remove(animal);
-        if (animalsAtPosition.isEmpty()) {
-            livingAnimals.remove(position);
+    public void removeAnimals() {
+        for (Map.Entry<Vector2d, List<Animal>> entry : livingAnimals.entrySet()) {
+            Vector2d position = entry.getKey();
+            List<Animal> animals = entry.getValue();
+            for (Animal animal : animals) {
+                if (animal.getEnergy==0) {
+                    animals.remove(animal);
+                    if (animals.isEmpty()) {
+                        livingAnimals.remove(position);
+                    }
+                    deadAnimals.putIfAbsent(position, new ArrayList<>());
+                    deadAnimals.get(position).add(animal);
+                }
+            }
         }
-        deadAnimals.putIfAbsent(position, new ArrayList<>());
-        deadAnimals.get(position).add(animal);
     }
 
     @Override
@@ -38,7 +46,7 @@ public abstract class AbstractWorldMap implements WorldMap{
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return position.follows(lowerLeft) && position.precedes(upperRight);
+        return position.getY()>=0 && position.getY()<height;
     }
 
     @Override

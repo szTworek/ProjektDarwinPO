@@ -1,6 +1,9 @@
 package agh.oop.project.model;
 
+import java.util.List;
 import java.util.Objects;
+
+import static java.lang.Math.abs;
 
 public class Vector2d {
 
@@ -62,5 +65,15 @@ public class Vector2d {
     }
     public int hashCode() {
         return Objects.hash(x, y);
+    }
+
+    public boolean isNear(Vector2d other, int radius) {
+        return abs(this.x-other.x)+abs(this.y-other.y) <= radius;
+    }
+    public boolean isNear(List<Vector2d> others, int radius) {
+        for(Vector2d other: others) {
+            if(isNear(other, radius)) return true;
+        }
+        return false;
     }
 }

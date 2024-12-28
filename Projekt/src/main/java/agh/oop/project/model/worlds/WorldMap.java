@@ -1,10 +1,13 @@
-package agh.oop.project.model;
+package agh.oop.project.model.worlds;
+
+import agh.oop.project.model.Vector2d;
+import agh.oop.project.model.animals.Animal;
 
 import java.util.List;
 
 public interface WorldMap {
 
-    void placeAnimal(Animal animal, Vector2d position);
+    void placeAnimal(Animal animal);
 
     void removeAnimals();
 

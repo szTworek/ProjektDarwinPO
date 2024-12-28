@@ -1,9 +1,6 @@
 package agh.oop.project;
 
 
-import agh.oop.project.model.Animal;
-import agh.oop.project.model.Vector2d;
-
 public class World {
     public static void main(String[] args) {
 

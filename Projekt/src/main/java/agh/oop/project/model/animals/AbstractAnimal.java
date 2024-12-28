@@ -1,10 +1,11 @@
-package agh.oop.project.model;
+package agh.oop.project.model.animals;
 
-import agh.oop.project.World;
+import agh.oop.project.model.MapDirection;
+import agh.oop.project.model.Specifications;
+import agh.oop.project.model.Vector2d;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public abstract class AbstractAnimal implements Animal {
 
@@ -13,6 +14,7 @@ public abstract class AbstractAnimal implements Animal {
     protected ArrayList<Integer> genome;
     protected int nextGenome;
     protected int energy;
+    protected int age = 0;
     protected List<Animal> children = new ArrayList<>();
 
     public String toString() {
@@ -39,6 +41,14 @@ public abstract class AbstractAnimal implements Animal {
         return energy;
     }
 
+    public int getChildAmount() {
+        return children.size();
+    }
+
+    public int getAge(){
+        return age;
+    }
+
     public void turn(int turnAmount) {
         // obrót zwierzaka
         // pierwsza częsć ruchu - można później do metody move dać
@@ -49,7 +59,6 @@ public abstract class AbstractAnimal implements Animal {
     public void move(){
         this.turn(genome.get(nextGenome));
         position.add(direction.toUnitVector());
-
         nextGenome();
     }
 
@@ -78,11 +87,11 @@ public abstract class AbstractAnimal implements Animal {
     }
 
     public void eat(Specifications specs) {
-        this.energy += specs.getAmountOfEnergyPerPlant();
+        this.energy += specs.amountOfEnergyPerPlant();
     }
 
     public boolean isHealthy(Specifications specs) {
-        return energy >= specs.getHealthyLimit();
+        return energy >= specs.healthyLimit();
     }
 
     public boolean isDead() {

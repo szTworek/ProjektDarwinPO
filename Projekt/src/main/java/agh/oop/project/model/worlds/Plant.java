@@ -1,8 +1,9 @@
-package agh.oop.project.model;
+package agh.oop.project.model.worlds;
 
-import java.util.Vector;
+import agh.oop.project.model.Vector2d;
+import agh.oop.project.model.WorldElement;
 
-public class Plant implements WorldElement{
+public class Plant implements WorldElement {
     private final Vector2d position;
     public Plant(Vector2d position){
         this.position = position;

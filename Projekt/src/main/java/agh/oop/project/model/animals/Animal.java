@@ -1,6 +1,7 @@
-package agh.oop.project.model;
+package agh.oop.project.model.animals;
 
-import agh.oop.project.World;
+import agh.oop.project.model.*;
+import agh.oop.project.model.worlds.WorldMap;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,8 @@ public interface Animal extends WorldElement {
     MapDirection getDirection();
     ArrayList<Integer> getGenome();
     int getEnergy();
+    int getAge();
+    int getChildAmount();
 
     // moving
     void turn(int turnAmount);

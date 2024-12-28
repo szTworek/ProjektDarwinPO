@@ -11,7 +11,7 @@ public interface WorldMap {
     boolean isPlantAt(Vector2d position);
 
     boolean canMoveTo( Vector2d position);
-
+  
     void manageReproduction(Vector2d position, List<Animal> animals);
 
     // obsluguje sytuacje ktora dzieje sie na polu, w szczegolnosci gdy znajduje sie na nim kilka zwierząt
@@ -19,7 +19,4 @@ public interface WorldMap {
     void handleAction();
 
     void generatePlants(int quantity);
-
-
-
 }

@@ -3,9 +3,11 @@ package agh.oop.project.model.animals;
 import agh.oop.project.model.MapDirection;
 import agh.oop.project.model.Specifications;
 import agh.oop.project.model.Vector2d;
+import agh.oop.project.model.worlds.WorldMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractAnimal implements Animal {
 
@@ -37,6 +39,10 @@ public abstract class AbstractAnimal implements Animal {
         return genome;
     }
 
+    public int getNextGenome() {
+        return genome.get(nextGenome);
+    }
+
     public int getEnergy(){
         return energy;
     }
@@ -49,6 +55,10 @@ public abstract class AbstractAnimal implements Animal {
         return age;
     }
 
+    public void decreaseEnergy(int amount) {
+        energy-=amount;
+    }
+
     public void turn(int turnAmount) {
         // obrót zwierzaka
         // pierwsza częsć ruchu - można później do metody move dać
@@ -56,14 +66,30 @@ public abstract class AbstractAnimal implements Animal {
         direction = MapDirection.values()[(turnAmount + i) % 8];
     }
 
-    public void move(){
+    public Vector2d move(int width, WorldMap map) {
         this.turn(genome.get(nextGenome));
-        position.add(direction.toUnitVector());
+        Vector2d newPosition = position.add(direction.toUnitVector()).goAroundTheGlobe(width);
         nextGenome();
+
+        if (map.canMoveTo(newPosition)) position = newPosition;
+
+        return position;
     }
 
-        // reproduce will be separate for every animal subtype
+        // reproduce is separate for every animal subtype
         // bcs crazyAnimal will create crazyAnimal etc
+
+    public ArrayList<Integer> createNewGenome(Animal animal) {
+        Random rand = new Random();
+        ArrayList<Integer> newGenome;
+        if (rand.nextBoolean()) newGenome = this.newGenome(animal);
+        else newGenome = animal.newGenome(this);
+        return newGenome;
+    }
+    public void decreaseParentsEnergy(Animal parent2, int amount) {
+        this.decreaseEnergy(amount);
+        parent2.decreaseEnergy(amount);
+    }
 
     public ArrayList<Integer> newGenome(Animal animal) {
         ArrayList<Integer> newGenome = new ArrayList<>();

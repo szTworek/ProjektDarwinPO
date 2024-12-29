@@ -20,19 +20,12 @@ public class NormalAnimal extends AbstractAnimal {
         nextGenome = rand.nextInt(genome.size());
         this.energy = energy;
     }
-    public NormalAnimal(Vector2d position, ArrayList<Integer> genome){
-        //poczatkowe zwierzeta maja full energii ale przy rozmnazaniu konieczne jest juz jej podawanie
-        this(position, genome, 100);
-    }
 
     @Override
     public void reproduce(Animal animal, WorldMap map, Specifications specs) {
-        Random rand = new Random();
-        ArrayList<Integer> newGenome;
-        if (rand.nextBoolean()) newGenome = this.newGenome(animal);
-        else newGenome = animal.newGenome(this);
+        ArrayList<Integer> newGenome = createNewGenome(animal);
 
-        // decreasing parents energy
+        decreaseParentsEnergy(animal, specs.energyUsageForReproduction());
 
         NormalAnimal kid = new NormalAnimal(this.position, newGenome, 2*specs.energyUsageForReproduction());
 

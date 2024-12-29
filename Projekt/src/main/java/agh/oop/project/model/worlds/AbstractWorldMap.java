@@ -9,38 +9,72 @@ import java.util.*;
 public abstract class AbstractWorldMap implements WorldMap {
     private final Random random = new Random();
     protected Map<Vector2d, List<Animal>> livingAnimals = new HashMap<>();
-    protected Map<Vector2d, List<Animal>> deadAnimals = new HashMap<>();
     protected Map<Vector2d, Plant> plants = new HashMap<>();
     protected Vector2d lowerLeft = new Vector2d(0,0);
     protected Vector2d upperRight ;
     protected Specifications specifications;
+    /*
+         liczby wszystkich zwierzaków,
+         liczby wszystkich roślin,
+         liczby wolnych pól,
+         najpopularniejszych genotypów,
+         średniego poziomu energii dla żyjących zwierzaków,
+         średniej długości życia zwierzaków dla martwych zwierzaków (wartość uwzględnia wszystkie nieżyjące zwierzaki - od początku symulacji),
+         średniej liczby dzieci dla żyjących zwierzaków (wartość uwzględnia wszystkie powstałe zwierzaki, a nie tylko zwierzaki powstałe w danej epoce).
+    */
+    // statistics
+    protected int livingAnimalAmount = 0;
+    protected int deadAnimalAmount = 0;
+    // plantAmount = plants.size() - bez sensu osobną pisać
+    protected int freeAreas = 0;
+    protected Map<List<Integer>, Integer> genotypes = new HashMap<>();
+    protected int sumOfLivingEnergy = specifications.startingAmountOfAnimals() * specifications.startingEnergyForAnimals();
+    protected int sumOfDeadDays = 0; // średnia liczba to suma/deadAnimalAmount
+    protected int sumOfKids = -2*specifications.startingAmountOfAnimals(); // średnia liczba to suma/livingAnimalAmount
+
+    public void statsUpdateWhenAnimalDied(Animal animal){
+        livingAnimalAmount--;
+        deadAnimalAmount++;
+        sumOfDeadDays += animal.getAge();
+        sumOfKids -= animal.getChildAmount();
+    }
+    public void statsUpdateWhenAnimalPlaced(Animal animal){
+        livingAnimalAmount++;
+        genotypes.putIfAbsent(animal.getGenome(), 0);
+        genotypes.replace(animal.getGenome(), genotypes.get(animal.getGenome()) + 1);
+        sumOfKids += 2;
+    }
 
     public AbstractWorldMap(Specifications specifications) {
         this.specifications = specifications;
         upperRight = new Vector2d(specifications.width(),specifications.height());
     }
 
-    @Override
-    public void placeAnimal(Animal animal) {
-        livingAnimals.putIfAbsent(animal.getPosition(), new ArrayList<>());
-        livingAnimals.get(animal.getPosition()).add(animal);
+    public int getLivingAnimalAmount(){
+        return livingAnimalAmount;
     }
 
     @Override
-    public void removeAnimals() {
+    public void placeAnimal(Animal animal) {
+        livingAnimals.putIfAbsent(animal.getPosition(), new LinkedList<>());
+        livingAnimals.get(animal.getPosition()).add(animal);
+
+        statsUpdateWhenAnimalPlaced(animal);
+    }
+
+    @Override
+    public void removeDeadAnimals() {
         for (Map.Entry<Vector2d, List<Animal>> entry : livingAnimals.entrySet()) {
             Vector2d position = entry.getKey();
             List<Animal> animals = entry.getValue();
             for (Animal animal : animals) {
                 if (animal.isDead()) {
                     animals.remove(animal);
-                    if (animals.isEmpty()) {
-                        livingAnimals.remove(position);
-                    }
-                    deadAnimals.putIfAbsent(position, new ArrayList<>());
-                    deadAnimals.get(position).add(animal);
+
+                    statsUpdateWhenAnimalDied(animal);
                 }
             }
+            if (animals.isEmpty()) livingAnimals.remove(position);
         }
     }
 
@@ -83,13 +117,16 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void handleAction(){
+    public void eatingAndReproduction(){
         // trzeba usuwać listy z animalami z pozycji jezeli nic na nich nie stoi, w przeciwnym
         // wypadku nie oplaca sie uzywac hashmapy
         for (Vector2d position : livingAnimals.keySet()) {
             List<Animal> animals = livingAnimals.get(position);
             sortAnimals(animals);
-            if (isPlantAt(position)) animals.getFirst().eat(specifications);
+            if (isPlantAt(position)) {
+                animals.getFirst().eat(specifications);
+                sumOfLivingEnergy += specifications.amountOfEnergyPerPlant();
+            }
             manageReproduction(position, animals);
         }
     }
@@ -115,6 +152,32 @@ public abstract class AbstractWorldMap implements WorldMap {
                 betterArea.remove(index);
                 plants.put(position, new Plant(position));
             }
+        }
+    }
+
+    @Override
+    public void moveAllAnimals(){
+        for(List<Animal> animals: livingAnimals.values()) {
+            for (Animal animal : animals) {
+                move(animal);
+            }
+        }
+    }
+
+    @Override
+    public void move(Animal animal) {
+
+        animal.decreaseEnergy(1);
+        sumOfLivingEnergy--;
+
+        Vector2d oldPosition = animal.getPosition();
+        List<Animal> animals = livingAnimals.get(animal.getPosition());
+        animal.move(specifications.width(), this);
+        if(oldPosition != animal.getPosition()) {
+            animals.remove(animal);
+            livingAnimals.putIfAbsent(animal.getPosition(), new LinkedList<>());
+            livingAnimals.get(animal.getPosition()).add(animal);
+            if (animals.isEmpty()) livingAnimals.remove(oldPosition);
         }
     }
 }

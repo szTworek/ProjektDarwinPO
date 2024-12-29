@@ -11,18 +11,21 @@ public interface Animal extends WorldElement {
     // getters
     MapDirection getDirection();
     ArrayList<Integer> getGenome();
+    int getNextGenome();
     int getEnergy();
     int getAge();
     int getChildAmount();
 
     // moving
     void turn(int turnAmount);
-    void move();
+    Vector2d move(int width, WorldMap map);
 
     // sex
     void reproduce(Animal animal, WorldMap map, Specifications specs);
     ArrayList<Integer> newGenome(Animal animal);
     int getDescendantAmount();
+
+    void decreaseEnergy(int amount);
 
     // eat
     void eat(Specifications specs);

@@ -4,12 +4,15 @@ import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.animals.Animal;
 
 import java.util.List;
+import java.util.Vector;
 
 public interface WorldMap {
 
+    int getLivingAnimalAmount();
+
     void placeAnimal(Animal animal);
 
-    void removeAnimals();
+    void removeDeadAnimals();
 
     boolean isPlantAt(Vector2d position);
 
@@ -17,9 +20,10 @@ public interface WorldMap {
   
     void manageReproduction(Vector2d position, List<Animal> animals);
 
-    // obsluguje sytuacje ktora dzieje sie na polu, w szczegolnosci gdy znajduje sie na nim kilka zwierząt
-    // jedzenie roslin, rozmnazanie albo nic jezeli zwierze jest slabsze niz pozostale
-    void handleAction();
+    void eatingAndReproduction();
 
     void generatePlants(int quantity);
+
+    void moveAllAnimals();
+    void move(Animal animal);
 }

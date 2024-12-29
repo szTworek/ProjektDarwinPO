@@ -16,20 +16,19 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void removeAnimals() {
+    public void removeDeadAnimals() {
         lastDeadPositions.clear();
         for (Map.Entry<Vector2d, List<Animal>> entry : livingAnimals.entrySet()) {
             Vector2d position = entry.getKey();
             List<Animal> animals = entry.getValue();
             for (Animal animal : animals) {
-                if (animal.getEnergy()==0) {
+                if (animal.isDead()) {
                     lastDeadPositions.add(position);
                     animals.remove(animal);
-                    if (animals.isEmpty()) {
-                        livingAnimals.remove(position);
-                    }
-                    deadAnimals.putIfAbsent(position, new ArrayList<>());
-                    deadAnimals.get(position).add(animal);
+
+                    statsUpdateWhenAnimalDied(animal);
+
+                    if (animals.isEmpty()) livingAnimals.remove(position);
                     // tu był break ale nie może być bo by się mogły nie usunąć wszystkie martwe zwierzaki
                 }
             }

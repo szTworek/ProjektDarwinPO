@@ -23,7 +23,7 @@ public class CrazyAnimal extends AbstractAnimal {
 
     @Override
     public void reproduce(Animal animal, WorldMap map, Specifications specs) {
-        ArrayList<Integer> newGenome = createNewGenome(animal);
+        ArrayList<Integer> newGenome = createNewGenome(animal, specs);
 
         decreaseParentsEnergy(animal, specs.energyUsageForReproduction());
 

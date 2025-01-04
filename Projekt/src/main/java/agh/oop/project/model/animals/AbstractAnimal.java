@@ -5,9 +5,7 @@ import agh.oop.project.model.Specifications;
 import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.worlds.WorldMap;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public abstract class AbstractAnimal implements Animal {
 
@@ -23,47 +21,58 @@ public abstract class AbstractAnimal implements Animal {
         return (position + " " + direction);
     }
 
+    @Override
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
 
+    @Override
     public MapDirection getDirection() {
         return direction;
     }
 
+    @Override
     public Vector2d getPosition() {
         return position;
     }
 
+    @Override
     public ArrayList<Integer> getGenome() {
         return genome;
     }
 
+    @Override
     public int getNextGenome() {
         return genome.get(nextGenome);
     }
 
+    @Override
     public int getEnergy(){
         return energy;
     }
 
+    @Override
     public int getChildAmount() {
         return children.size();
     }
 
+    @Override
     public int getAge(){
         return age;
     }
 
+    @Override
     public void decreaseEnergy(int amount) {
         energy-=amount;
     }
 
+    @Override
     public void turn(int turnAmount) {
         int i = direction.ordinal();
         direction = MapDirection.values()[(turnAmount + i) % 8];
     }
 
+    @Override
     public void move(int width, WorldMap map) {
         this.turn(genome.get(nextGenome));
         Vector2d newPosition = position.add(direction.toUnitVector()).goAroundTheGlobe(width);
@@ -77,16 +86,44 @@ public abstract class AbstractAnimal implements Animal {
         // reproduce is separate for every animal subtype
         // bcs crazyAnimal will create crazyAnimal etc
 
+    @Override
+    public void mutateGenome(ArrayList<Integer> genome, int numOfMutations) {
+        Random rand = new Random();
 
-    // TODO - add a possibility of mutations to createNewGenome
-    public ArrayList<Integer> createNewGenome(Animal animal) {
+        int length = genome.size();
+        LinkedList<Integer> ableToChange = new LinkedList<>();
+
+        for (int i = length-1; i >= 0; i--) {
+            ableToChange.addFirst(i);
+        }
+
+        for(int i = 0; i < numOfMutations; i++) {
+            int index = rand.nextInt(ableToChange.size());
+            int changedGenomeIndex = ableToChange.get(index);
+            ableToChange.remove(index);
+
+            int newGenome = rand.nextInt(8);
+            while(newGenome == genome.get(changedGenomeIndex)) newGenome = rand.nextInt(8);
+            System.out.println("old genome " + genome.get(changedGenomeIndex) + "| new genome " + newGenome);
+            genome.set(changedGenomeIndex, newGenome);
+        }
+    }
+
+    @Override
+    public ArrayList<Integer> createNewGenome(Animal animal, Specifications specifications) {
         Random rand = new Random();
         ArrayList<Integer> newGenome;
         if (rand.nextBoolean()) newGenome = this.newGenome(animal);
         else newGenome = animal.newGenome(this);
+
+        // mutations
+        int numberOfMutations = rand.nextInt(specifications.maximalAmountOfMutations()-specifications.minimalAmountOfMutations() + 1) + specifications.minimalAmountOfMutations();
+        mutateGenome(newGenome, numberOfMutations);
+
         return newGenome;
     }
 
+    @Override
     public ArrayList<Integer> newGenome(Animal animal) {
         ArrayList<Integer> newGenome = new ArrayList<>();
         int i = 0;
@@ -105,10 +142,12 @@ public abstract class AbstractAnimal implements Animal {
         parent2.decreaseEnergy(amount);
     }
 
+    @Override
     public void addChild(Animal kid){
         children.add(kid);
     }
 
+    @Override
     public int getDescendantAmount() {
        int result = children.size();
        for(Animal child: children) {
@@ -117,18 +156,22 @@ public abstract class AbstractAnimal implements Animal {
         return result;
     }
 
+    @Override
     public void eat(Specifications specs) {
         this.energy += specs.amountOfEnergyPerPlant();
     }
 
+    @Override
     public boolean isHealthy(Specifications specs) {
         return energy >= specs.healthyLimit();
     }
 
+    @Override
     public boolean isDead() {
         return energy <= 0;
     }
 
+    @Override
     public void nextGenome() {
         nextGenome = (nextGenome + 1) % genome.size();
     }

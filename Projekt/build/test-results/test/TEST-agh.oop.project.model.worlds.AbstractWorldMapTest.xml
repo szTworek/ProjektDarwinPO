@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="agh.oop.project.model.worlds.AbstractWorldMapTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-01-04T01:51:53" hostname="VICTUSPIOTER" time="0.016">
-  <properties/>
-  <testcase name="manageReproductionTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.016"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -8,7 +8,7 @@ import agh.oop.project.model.worlds.WorldMap;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,6 +93,25 @@ class AbstractAnimalTest {
     }
 
     @Test
+    void mutateGenomeTest(){
+        ArrayList<Integer> genome = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
+        ArrayList<Integer> originalGenome = new ArrayList<>(genome);
+        int numOfMutations = 3;
+        Animal animal1 = new NormalAnimal(new Vector2d(1, 1), genome, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
+
+        animal1.mutateGenome(genome, numOfMutations);
+
+        assertEquals(originalGenome.size(), genome.size());
+        int actualNumOfMutations = 0;
+        for (int i = 0; i < originalGenome.size(); i++) {
+            if (!genome.get(i).equals(originalGenome.get(i))) actualNumOfMutations++;
+        }
+        System.out.println(genome);
+        System.out.println(originalGenome);
+        assertEquals(numOfMutations, actualNumOfMutations);
+    }
+
+    @Test
     void isBlockedByPoles(){
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genomes = new ArrayList<>();
@@ -162,10 +181,10 @@ class AbstractAnimalTest {
         resultGenome4.add(1);
         resultGenome4.add(0);
 
-        ArrayList<Integer> newGenome = animal1.createNewGenome(animal2);
+        ArrayList<Integer> newGenome = animal1.createNewGenome(animal2, specifications);
         assertTrue(newGenome.equals(resultGenome1) || newGenome.equals(resultGenome2));
         animal1.decreaseEnergy(5);
-        newGenome = animal1.createNewGenome(animal2);
+        newGenome = animal1.createNewGenome(animal2, specifications);
         assertTrue(newGenome.equals(resultGenome3) || newGenome.equals(resultGenome4));
     }
 

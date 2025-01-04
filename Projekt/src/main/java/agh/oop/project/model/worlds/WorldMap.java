@@ -28,6 +28,8 @@ public interface WorldMap {
 
     void eatingAndReproduction();
 
+    void getBetterArea();
+
     void generatePlants(int quantity);
 
     void moveAllAnimals();

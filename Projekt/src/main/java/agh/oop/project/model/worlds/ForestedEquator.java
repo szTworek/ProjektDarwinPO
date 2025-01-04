@@ -9,8 +9,8 @@ import static java.lang.Math.*;
 
 public class ForestedEquator  extends AbstractWorldMap implements WorldMap {
 
-    private final List<Vector2d> availablePositionsAtEquator = new LinkedList<>();
-    private final List<Vector2d> availablePositionsNotAtEquator = new LinkedList<>();
+    private final HashSet<Vector2d> availablePositionsAtEquator = new HashSet<>();
+    private final HashSet<Vector2d> availablePositionsNotAtEquator = new HashSet<>();
     private int lowestEquatorPoint;
     private int highestEquatorPoint;
 
@@ -24,23 +24,25 @@ public class ForestedEquator  extends AbstractWorldMap implements WorldMap {
         int equatorHeight = max(round((float) specifications.height() /5), 1);
         int middlePoint = (int) (ceil((double) specifications.height() /2) - 1);
 
-        highestEquatorPoint = (int) (ceil((double) ((equatorHeight - 1) /2)) + middlePoint);
-        lowestEquatorPoint = (int) (middlePoint - floor((double) ((equatorHeight - 1) /2)));
+        highestEquatorPoint = (int) (ceil((double) (equatorHeight - 1) /2) + middlePoint);
+        lowestEquatorPoint = (int) (middlePoint - floor((double) (equatorHeight - 1) /2));
     }
 
     @Override
-    public void generatePlants(int quantity){
+    public void getBetterArea(){
+
+        betterArea.clear();
+        worseArea.clear();
 
         for (int i = 0; i < specifications.width(); i++) {
             for (int j = 0; j < specifications.height(); j++){
                 Vector2d vector = new Vector2d(i,j);
-                if(!plants.containsKey(vector)) {
-                    if (j>=lowestEquatorPoint && j<=highestEquatorPoint) availablePositionsAtEquator.add(vector);
-                    else availablePositionsNotAtEquator.add(vector);
-                }
+                if (j>=lowestEquatorPoint && j<=highestEquatorPoint) betterArea.add(vector);
+                else worseArea.add(vector);
             }
         }
-        generatePlants(quantity, availablePositionsAtEquator, availablePositionsNotAtEquator);
     }
+
+
 }
 

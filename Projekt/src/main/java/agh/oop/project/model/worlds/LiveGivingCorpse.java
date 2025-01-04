@@ -9,7 +9,6 @@ import java.util.*;
 public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
 
     private final List<Vector2d> lastDeadPositions = new LinkedList<>();
-    private final List<Vector2d> otherAvailablePositions = new LinkedList<>();
 
     public LiveGivingCorpse(Specifications specifications) {
         super(specifications);
@@ -36,30 +35,27 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void generatePlants(int quantity) {
-
+    public void getBetterArea(){
         // radius jest zależny od ilosci martwych zwierzaków, aby zawsze było około 20% lepszych pól
         int radius = 1;
         int expectedBetterArea = specifications.height()*specifications.width()/5;
         while((1 + (radius + 1) * radius * 2) * lastDeadPositions.size() < expectedBetterArea && !lastDeadPositions.isEmpty()) {
-            radius++;
+            radius++;// radius zaokrąglamy w górę bo może nachodzić na siebie i imo tak wyjdzie bliżej srednio 20%
         }
-        // radius zaokrąglamy w górę bo może nachodzić na siebie
-        // i imo tak wyjdzie bliżej srendio 20%
 
-        otherAvailablePositions.clear();
+        betterArea.clear();
+        worseArea.clear();
+
         for (int i = 0; i < specifications.width(); i++) {
             for (int j = 0; j < specifications.height(); j++) {
                 Vector2d position = new Vector2d(i, j);
                 // radius to jak blisko miejsca zgonu musi być pole aby być lepsze
-                if (!plants.containsKey(position) && position.isNear(lastDeadPositions, radius)) {
-                    lastDeadPositions.add(position);
-                } else if (!plants.containsKey(position)) {
-                    otherAvailablePositions.add(position);
-                }
+                if (position.isNear(lastDeadPositions, radius))
+                    betterArea.add(position);
+                else
+                    worseArea.add(position);
             }
         }
-        generatePlants(quantity, lastDeadPositions, otherAvailablePositions);
     }
 }
 

@@ -10,10 +10,10 @@ public abstract class AbstractWorldMap implements WorldMap {
     private final Random random = new Random();
     protected Map<Vector2d, List<Animal>> livingAnimals = new HashMap<>();
     protected Map<Vector2d, Plant> plants = new HashMap<>();
-    protected Vector2d lowerLeft = new Vector2d(0,0);
     protected Vector2d upperRight ;
     protected Specifications specifications;
     /*
+    STATYSTYKI:
          liczby wszystkich zwierzaków,
          liczby wszystkich roślin,
          liczby wolnych pól,
@@ -22,15 +22,28 @@ public abstract class AbstractWorldMap implements WorldMap {
          średniej długości życia zwierzaków dla martwych zwierzaków (wartość uwzględnia wszystkie nieżyjące zwierzaki - od początku symulacji),
          średniej liczby dzieci dla żyjących zwierzaków (wartość uwzględnia wszystkie powstałe zwierzaki, a nie tylko zwierzaki powstałe w danej epoce).
     */
-    // statistics
     protected int livingAnimalAmount = 0;
     protected int deadAnimalAmount = 0;
     // plantAmount = plants.size() - bez sensu osobną pisać
-    protected int freeAreas = 0;
+    protected int freeAreas = 0; //TODO - (dynamic maybe) freeAreas update
     protected Map<List<Integer>, Integer> genotypes = new HashMap<>();
-    protected int sumOfLivingEnergy = specifications.startingAmountOfAnimals() * specifications.startingEnergyForAnimals();
+    protected int sumOfLivingEnergy;
     protected int sumOfDeadDays = 0; // średnia liczba to suma/deadAnimalAmount
-    protected int sumOfKids = -2*specifications.startingAmountOfAnimals(); // średnia liczba to suma/livingAnimalAmount
+    protected int sumOfKids; // średnia liczba to suma/livingAnimalAmount
+
+    public AbstractWorldMap(Specifications specifications) {
+        this.specifications = specifications;
+        upperRight = new Vector2d(specifications.width(),specifications.height());
+        sumOfLivingEnergy = specifications.startingAmountOfAnimals() * specifications.startingEnergyForAnimals();
+        sumOfKids = -2*specifications.startingAmountOfAnimals();
+    }
+
+    public Map<Vector2d, List<Animal>> getLivingAnimals(){
+        return livingAnimals;
+    }
+    public Map<Vector2d, Plant> getPlants(){
+        return plants;
+    }
 
     public void statsUpdateWhenAnimalDied(Animal animal){
         livingAnimalAmount--;
@@ -43,11 +56,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         genotypes.putIfAbsent(animal.getGenome(), 0);
         genotypes.replace(animal.getGenome(), genotypes.get(animal.getGenome()) + 1);
         sumOfKids += 2;
-    }
-
-    public AbstractWorldMap(Specifications specifications) {
-        this.specifications = specifications;
-        upperRight = new Vector2d(specifications.width(),specifications.height());
     }
 
     public int getLivingAnimalAmount(){
@@ -89,29 +97,38 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void manageReproduction(Vector2d position, List<Animal> animals) {
-        for (int i=1; i<animals.size(); i+=2) {
+    public void manageReproduction(List<Animal> animals) {
+        int initialSize = animals.size(); // robimy tak aby dopiero co urodzone dzieci nie mogły się rozmnażać
+        for (int i=1; i<initialSize; i+=2) {
             Animal animal1 = animals.get(i-1);
             Animal animal2 = animals.get(i);
-            if (animal2.isHealthy(specifications)) break; // wystarczy że sprawdzimy to dla animal2 bo ma zawsze mniej lub tyle samo energii co animal1
+            if (!animal2.isHealthy(specifications)) break; // wystarczy że sprawdzimy to dla animal2 bo ma zawsze mniej lub tyle samo energii co animal1
             animal1.reproduce(animal2, this, specifications);
         }
     }
 
-    private void sortAnimals(List<Animal> animals) {
+    @Override
+    public void sortAnimals(List<Animal> animals) {
         animals.sort(Comparator.comparingInt(Animal::getEnergy).reversed());
-        for (int i=0; i<animals.size(); i++) {
-            if (animals.get(i).getEnergy()==animals.get(i+1).getEnergy() && ( // jak energia ta sama
-                    animals.get(i).getAge()<animals.get(i+1).getAge() || ( // i jest młodszy
-                    animals.get(i).getAge()==animals.get(i+1).getAge() && ( // lub jak jest w takim samym wieku
-                    animals.get(i).getChildAmount()<animals.get(i+1).getChildAmount() || ( // i ma więcej dzieci
-                    animals.get(i).getChildAmount()==animals.get(i+1).getChildAmount() && random.nextBoolean()) //lub jak tyle samo to losowo
-                    ))
-            )) {
-                Animal switchedAnimal = animals.get(i);
-                animals.set(i, animals.get(i+1));
-                animals.set(i+1, switchedAnimal);
-                i-=2; // technicznie może się w nieskończonosć swapować jak rand będzie unlucky ale bez przesady xd
+        boolean flag = true;
+        while(flag){
+            flag = false;
+            for (int i=0; i<animals.size()-1; i++) {
+                if (animals.get(i).getEnergy()==animals.get(i+1).getEnergy() && ( // jak energia ta sama
+                        animals.get(i).getAge()<animals.get(i+1).getAge() || ( // i jest młodszy
+                        animals.get(i).getAge()==animals.get(i+1).getAge() && // lub jak jest w takim samym wieku
+                        animals.get(i).getChildAmount()<animals.get(i+1).getChildAmount() // i ma więcej dzieci                        ))
+                ))) {
+                    Animal switchedAnimal = animals.get(i);
+                    animals.set(i, animals.get(i+1));
+                    animals.set(i+1, switchedAnimal);
+                    flag = true;
+                }else if(animals.get(i).getChildAmount()==animals.get(i+1).getChildAmount() && random.nextBoolean()){
+                    // jak ma tyle samo dzieci to zmieniamy losowo ale nie dajemy flagi aby nie zapętliło się w nieskończonosć
+                    Animal switchedAnimal = animals.get(i);
+                    animals.set(i, animals.get(i+1));
+                    animals.set(i+1, switchedAnimal);
+                }
             }
         }
     }
@@ -127,7 +144,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 animals.getFirst().eat(specifications);
                 sumOfLivingEnergy += specifications.amountOfEnergyPerPlant();
             }
-            manageReproduction(position, animals);
+            manageReproduction(animals);
         }
     }
 

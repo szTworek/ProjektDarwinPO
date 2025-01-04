@@ -60,35 +60,31 @@ public abstract class AbstractAnimal implements Animal {
     }
 
     public void turn(int turnAmount) {
-        // obrót zwierzaka
-        // pierwsza częsć ruchu - można później do metody move dać
         int i = direction.ordinal();
         direction = MapDirection.values()[(turnAmount + i) % 8];
     }
 
-    public Vector2d move(int width, WorldMap map) {
+    public void move(int width, WorldMap map) {
         this.turn(genome.get(nextGenome));
         Vector2d newPosition = position.add(direction.toUnitVector()).goAroundTheGlobe(width);
         nextGenome();
 
         if (map.canMoveTo(newPosition)) position = newPosition;
 
-        return position;
+        age++;
     }
 
         // reproduce is separate for every animal subtype
         // bcs crazyAnimal will create crazyAnimal etc
 
+
+    // TODO - add a possibility of mutations to createNewGenome
     public ArrayList<Integer> createNewGenome(Animal animal) {
         Random rand = new Random();
         ArrayList<Integer> newGenome;
         if (rand.nextBoolean()) newGenome = this.newGenome(animal);
         else newGenome = animal.newGenome(this);
         return newGenome;
-    }
-    public void decreaseParentsEnergy(Animal parent2, int amount) {
-        this.decreaseEnergy(amount);
-        parent2.decreaseEnergy(amount);
     }
 
     public ArrayList<Integer> newGenome(Animal animal) {
@@ -102,6 +98,15 @@ public abstract class AbstractAnimal implements Animal {
             newGenome.add(animal.getGenome().get(i));
         }
         return newGenome;
+    }
+
+    public void decreaseParentsEnergy(Animal parent2, int amount) {
+        this.decreaseEnergy(amount);
+        parent2.decreaseEnergy(amount);
+    }
+
+    public void addChild(Animal kid){
+        children.add(kid);
     }
 
     public int getDescendantAmount() {

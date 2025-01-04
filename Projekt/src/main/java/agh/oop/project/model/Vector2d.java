@@ -57,6 +57,8 @@ public class Vector2d {
     }
 
     public Vector2d goAroundTheGlobe (int width) {
-        return new Vector2d(x%width,y);
+        int newX = this.getX();
+        if (newX < 0) newX += width;
+        return new Vector2d(newX % width,y);
     }
 }

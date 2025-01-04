@@ -4,9 +4,13 @@ import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.animals.Animal;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public interface WorldMap {
+
+    Map<Vector2d, List<Animal>> getLivingAnimals();
+    Map<Vector2d, Plant> getPlants();
 
     int getLivingAnimalAmount();
 
@@ -17,8 +21,10 @@ public interface WorldMap {
     boolean isPlantAt(Vector2d position);
 
     boolean canMoveTo( Vector2d position);
-  
-    void manageReproduction(Vector2d position, List<Animal> animals);
+
+    void sortAnimals(List<Animal> animals);
+
+    void manageReproduction(List<Animal> animals);
 
     void eatingAndReproduction();
 

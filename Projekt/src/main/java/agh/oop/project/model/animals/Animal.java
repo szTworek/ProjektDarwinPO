@@ -15,15 +15,17 @@ public interface Animal extends WorldElement {
     int getEnergy();
     int getAge();
     int getChildAmount();
+    int getDescendantAmount();
 
     // moving
     void turn(int turnAmount);
-    Vector2d move(int width, WorldMap map);
+    void move(int width, WorldMap map);
 
     // sex
     void reproduce(Animal animal, WorldMap map, Specifications specs);
+    ArrayList<Integer> createNewGenome(Animal animal);
     ArrayList<Integer> newGenome(Animal animal);
-    int getDescendantAmount();
+    void addChild(Animal child);
 
     void decreaseEnergy(int amount);
 

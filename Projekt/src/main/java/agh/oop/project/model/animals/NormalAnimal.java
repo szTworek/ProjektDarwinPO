@@ -11,15 +11,17 @@ import java.util.Random;
 public class NormalAnimal extends AbstractAnimal {
 
     public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy) {
-        Random rand = new Random();
-        // obrót startowy ma być losowy - możemy zmienić później na testy
-        this.direction = MapDirection.values()[rand.nextInt(8)];
+        this(position, genome, energy, MapDirection.values()[new Random().nextInt(8)], new Random().nextInt(genome.size()));
+    }
+
+    public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy, MapDirection direction, int nextGenome) {
+        this.direction = direction;
         this.position = position;
         this.genome = genome;
-        // zaczynamy też od losowego genomu
-        nextGenome = rand.nextInt(genome.size());
+        this.nextGenome = nextGenome;
         this.energy = energy;
     }
+
 
     @Override
     public void reproduce(Animal animal, WorldMap map, Specifications specs) {
@@ -28,6 +30,9 @@ public class NormalAnimal extends AbstractAnimal {
         decreaseParentsEnergy(animal, specs.energyUsageForReproduction());
 
         NormalAnimal kid = new NormalAnimal(this.position, newGenome, 2*specs.energyUsageForReproduction());
+
+        this.addChild(kid);
+        animal.addChild(kid);
 
         map.placeAnimal(kid);
     }

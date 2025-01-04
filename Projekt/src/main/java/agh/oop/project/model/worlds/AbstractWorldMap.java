@@ -12,6 +12,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected Map<Vector2d, Plant> plants = new HashMap<>();
     protected Vector2d upperRight ;
     protected Specifications specifications;
+    protected final HashSet<Vector2d> betterArea = new HashSet<>();
+    protected final HashSet<Vector2d> worseArea = new HashSet<>();
     /*
     STATYSTYKI:
          liczby wszystkich zwierzaków,
@@ -167,25 +169,37 @@ public abstract class AbstractWorldMap implements WorldMap {
         }
     }
 
-    public void generatePlants(int quantity, List<Vector2d> betterArea, List<Vector2d> otherArea) {
+    private HashSet<Vector2d> removePlantFieldsFromArea(HashSet<Vector2d> area){
+        HashSet<Vector2d> result = new HashSet<>(area);
+        for(Vector2d position : plants.keySet()) result.remove(position);
+        return result;
+    }
+
+    @Override
+    public void generatePlants(int quantity) {
+
+        getBetterArea();
+
+        ArrayList<Vector2d> betterAreaList = new ArrayList<>(removePlantFieldsFromArea(betterArea));
+        ArrayList<Vector2d> otherAreaList = new ArrayList<>(removePlantFieldsFromArea(worseArea));
 
         for(int i = 0; i < quantity; i++){
             int isBetter = random.nextInt(5); // 80% na wybór z równika / 20% na wybór z poza równika
             int index;
             Vector2d position;
 
-            if (betterArea.isEmpty() && otherArea.isEmpty()) break;
+            if (betterAreaList.isEmpty() && otherAreaList.isEmpty()) break;
 
-            if ((isBetter == 0 || betterArea.isEmpty()) && !otherArea.isEmpty()) {
-                index = random.nextInt(otherArea.size());
-                position = otherArea.get(index);
-                otherArea.remove(index);
+            if ((isBetter == 0 || betterAreaList.isEmpty()) && !otherAreaList.isEmpty()) {
+                index = random.nextInt(otherAreaList.size());
+                position = otherAreaList.get(index);
+                otherAreaList.remove(index);
                 plants.put(position, new Plant(position));
             }
             else {
-                index = random.nextInt(betterArea.size());
-                position = betterArea.get(index);
-                betterArea.remove(index);
+                index = random.nextInt(betterAreaList.size());
+                position = betterAreaList.get(index);
+                betterAreaList.remove(index);
                 plants.put(position, new Plant(position));
             }
 

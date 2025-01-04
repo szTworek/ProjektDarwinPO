@@ -15,6 +15,7 @@ public abstract class AbstractAnimal implements Animal {
     protected int nextGenome;
     protected int energy;
     protected int age = 0;
+    protected int plantsEaten = 0;
     protected List<Animal> children = new ArrayList<>();
 
     public String toString() {
@@ -59,6 +60,11 @@ public abstract class AbstractAnimal implements Animal {
     @Override
     public int getAge(){
         return age;
+    }
+
+    @Override
+    public int getPlantsEaten(){
+        return plantsEaten;
     }
 
     @Override
@@ -159,6 +165,7 @@ public abstract class AbstractAnimal implements Animal {
     @Override
     public void eat(Specifications specs) {
         this.energy += specs.amountOfEnergyPerPlant();
+        plantsEaten++;
     }
 
     @Override

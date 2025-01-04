@@ -16,6 +16,7 @@ public interface Animal extends WorldElement {
     int getAge();
     int getChildAmount();
     int getDescendantAmount();
+    int getPlantsEaten();
 
     // moving
     void turn(int turnAmount);

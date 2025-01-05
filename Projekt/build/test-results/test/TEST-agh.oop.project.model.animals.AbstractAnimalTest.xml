@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="agh.oop.project.model.animals.AbstractAnimalTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-01-04T19:23:36" hostname="VICTUSPIOTER" time="0.022">
+  <properties/>
+  <testcase name="mutateGenomeTest()" classname="agh.oop.project.model.animals.AbstractAnimalTest" time="0.022"/>
+  <system-out><![CDATA[old genome 5| new genome 7
+old genome 7| new genome 0
+old genome 2| new genome 7
+[0, 1, 7, 3, 4, 7, 6, 0]
+[0, 1, 2, 3, 4, 5, 6, 7]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

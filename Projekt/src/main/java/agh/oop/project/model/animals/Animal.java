@@ -16,6 +16,7 @@ public interface Animal extends WorldElement {
     int getAge();
     int getChildAmount();
     int getDescendantAmount();
+    int getPlantsEaten();
 
     // moving
     void turn(int turnAmount);
@@ -23,7 +24,8 @@ public interface Animal extends WorldElement {
 
     // sex
     void reproduce(Animal animal, WorldMap map, Specifications specs);
-    ArrayList<Integer> createNewGenome(Animal animal);
+    void mutateGenome(ArrayList<Integer> genome, int numOfMutations);
+    ArrayList<Integer> createNewGenome(Animal animal, Specifications specs);
     ArrayList<Integer> newGenome(Animal animal);
     void addChild(Animal child);
 

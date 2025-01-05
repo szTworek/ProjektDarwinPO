@@ -2,12 +2,15 @@ package agh.oop.project.model.worlds;
 
 import agh.oop.project.model.Specifications;
 import agh.oop.project.model.Vector2d;
+import agh.oop.project.model.WorldElement;
 import agh.oop.project.model.animals.Animal;
+import agh.oop.project.model.app.MapChangeListener;
 
 import java.util.*;
 
 public abstract class AbstractWorldMap implements WorldMap {
     private final Random random = new Random();
+    protected MapChangeListener listener;
     protected Map<Vector2d, List<Animal>> livingAnimals = new HashMap<>();
     protected Map<Vector2d, Plant> plants = new HashMap<>();
     protected Vector2d upperRight ;
@@ -41,6 +44,15 @@ public abstract class AbstractWorldMap implements WorldMap {
         freeAreas = specifications.width() * specifications.height();
     }
 
+    @Override
+    public int getHeight() {
+        return specifications.height();
+    }
+    @Override
+    public int getWidth() {
+        return specifications.width();
+    }
+
     public Map<Vector2d, List<Animal>> getLivingAnimals(){
         return livingAnimals;
     }
@@ -55,6 +67,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         sumOfKids -= animal.getChildAmount();
 
         if(livingAnimals.get(animal.getPosition()).isEmpty() && !plants.containsKey(animal.getPosition())) freeAreas++;
+        mapChanges();
     }
     public void statsUpdateWhenAnimalPlaced(Animal animal){
         livingAnimalAmount++;
@@ -63,6 +76,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         sumOfKids += 2;
 
         if(livingAnimals.get(animal.getPosition()).size() == 1 && !plants.containsKey(animal.getPosition())) freeAreas--;
+        mapChanges();
     }
     public void statsUpdateWhenPlantPlaced(Vector2d position) {
         if (!livingAnimals.containsKey(position) && !isPlantAt(position)) { // Replaced plants.containsKey(position)
@@ -93,17 +107,20 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void removeDeadAnimals() {
-        for (Map.Entry<Vector2d, List<Animal>> entry : livingAnimals.entrySet()) {
+        for (Map.Entry<Vector2d, List<Animal>> entry : new ArrayList<>(livingAnimals.entrySet())) {
             Vector2d position = entry.getKey();
             List<Animal> animals = entry.getValue();
-            for (Animal animal : animals) {
-                if (animal.isDead()) {
-                    animals.remove(animal);
 
+            animals.removeIf(animal -> {
+                if (animal.isDead()) {
                     statsUpdateWhenAnimalDied(animal);
+                    return true;
                 }
+                return false;
+            });
+            if (animals.isEmpty()) {
+                livingAnimals.remove(position);
             }
-            if (animals.isEmpty()) livingAnimals.remove(position);
         }
     }
 
@@ -167,6 +184,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             }
             manageReproduction(animals);
         }
+        mapChanges();
     }
 
     private HashSet<Vector2d> removePlantFieldsFromArea(HashSet<Vector2d> area){
@@ -205,15 +223,17 @@ public abstract class AbstractWorldMap implements WorldMap {
 
             statsUpdateWhenPlantPlaced(position);
         }
+        mapChanges();
     }
 
     @Override
     public void moveAllAnimals(){
-        for(List<Animal> animals: livingAnimals.values()) {
-            for (Animal animal : animals) {
+        for(List<Animal> animals: new ArrayList<>(livingAnimals.values())) {
+            for (Animal animal : new ArrayList<>(animals)) {
                 move(animal);
             }
         }
+        mapChanges();
     }
 
     @Override
@@ -233,5 +253,24 @@ public abstract class AbstractWorldMap implements WorldMap {
         }
 
         statsUpdateWhenMoving(oldPosition, animal.getPosition());
+    }
+
+    @Override
+    public WorldElement objectAt(Vector2d position) {
+        if (livingAnimals.containsKey(position)){
+            List<Animal> animals = livingAnimals.get(position);
+            sortAnimals(animals);
+            return animals.getFirst();
+        } else if (plants.containsKey(position)) {
+            return plants.get(position);
+        }
+        return null;
+    }
+
+    public void setListener(MapChangeListener listener) {
+        this.listener = listener;
+    }
+    public void mapChanges() {
+        listener.mapChanges(this, livingAnimalAmount, plants.size(), freeAreas, genotypes, (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
     }
 }

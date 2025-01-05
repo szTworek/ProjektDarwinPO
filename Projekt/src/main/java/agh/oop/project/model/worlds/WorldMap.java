@@ -1,7 +1,9 @@
 package agh.oop.project.model.worlds;
 
 import agh.oop.project.model.Vector2d;
+import agh.oop.project.model.WorldElement;
 import agh.oop.project.model.animals.Animal;
+import agh.oop.project.model.app.MapChangeListener;
 
 import java.util.List;
 import java.util.Map;
@@ -34,4 +36,8 @@ public interface WorldMap {
 
     void moveAllAnimals();
     void move(Animal animal);
+    int getHeight();
+    int getWidth();
+    void setListener(MapChangeListener listener);
+    WorldElement objectAt(Vector2d position);
 }

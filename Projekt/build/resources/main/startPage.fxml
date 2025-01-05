@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<!--
+        int height,
+        int width,
+        int startingAmountOfPlants,
+        int amountOfEnergyPerPlant,
+        int dailyPlantGrowth,
+        boolean normalGrowth, // true - zalesione równiki, false - życiodajne truchła
+        int startingAmountOfAnimals,
+        int startingEnergyForAnimals,
+        int healthyLimit,
+        int energyUsageForReproduction,
+        int minimalAmountOfMutations,
+        int maximalAmountOfMutations,
+        int genomeLength,
+        boolean normalGenome // false - nieco szaleństwa, true - pełna predestynacja-->
+
+<?import javafx.collections.FXCollections?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="agh.oop.project.model.app.SimulationStarter"
+            minHeight="800" minWidth="800">
+    <top>
+        <HBox alignment="CENTER" spacing="20" style="-fx-background-color: #123524; -fx-padding: 10;">
+            <Label text="Darwin World" id="title"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20;" alignment="CENTER">
+            <Label text="Wprowadź specyfikacje symulacji" style="-fx-font-size:24px; -fx-font-weight: bold; "/>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Wysokość:" />
+                <Spinner fx:id="height" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="50" initialValue="7" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Szerokość:" />
+                <Spinner fx:id="width" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="50" initialValue="7" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Początkowa ilość roślin:" />
+                <Spinner fx:id="startingAmountOfPlants" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="500" initialValue="3" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Energia otrzymywana z jednej rośliny:" />
+                <Spinner fx:id="amountOfEnergyPerPlant" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="10" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Ilość nowych roślin każdego dnia:" />
+                <Spinner fx:id="dailyPlantGrowth" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="500" initialValue="3" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Wariant wzrostu roślin:" />
+                <ComboBox fx:id="growthType">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Zalesione równiki"/>
+                            <String fx:value="Życiodajne truchła"/>
+                        </FXCollections>
+                    </items>
+                    <value>
+                        <String fx:value="Zalesione równiki"/>
+                    </value>
+                </ComboBox>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Początkowa liczba zwierząt:" />
+                <Spinner fx:id="startingAmountOfAnimals" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="500" initialValue="3" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Energia startowa zwierząt:" />
+                <Spinner fx:id="startingEnergyForAnimals" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="50" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Wymagana energia by zwierzak był najedzony:" />
+                <Spinner fx:id="healthyLimit" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="20" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Energia zużywana podczas rozmnażania:" />
+                <Spinner fx:id="energyUsageForReproduction" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="20" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Minimalna liczba mutacji u potomków:" />
+                <Spinner fx:id="minimalAmountOfMutations" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="10" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Maksymalna liczba mutacji u potomków:" />
+                <Spinner fx:id="maximalAmountOfMutations" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="10" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Wariant mutacji genomów:" />
+                <ComboBox fx:id="genomeType">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Pełna losowość"/>
+                            <String fx:value="Nieco szaleństwa"/>
+                        </FXCollections>
+                    </items>
+                    <value>
+                        <String fx:value="Pełna losowość"/>
+                    </value>
+                </ComboBox>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Długość genomów:" />
+                <Spinner fx:id="genomeLength" promptText="Wprowadź wartość">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="5" />
+                    </valueFactory>
+                </Spinner>
+            </HBox>
+            <Button fx:id="startButton" text="Start" onAction="#onSimulationStartClicked"/>
+        </VBox>
+    </center>
+</BorderPane>

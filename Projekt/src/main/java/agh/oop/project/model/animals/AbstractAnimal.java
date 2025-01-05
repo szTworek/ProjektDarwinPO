@@ -19,6 +19,7 @@ public abstract class AbstractAnimal implements Animal {
     protected int age = 0;
     protected List<Animal> children = new ArrayList<>();
 
+
     public String toString() {
         return (position + " " + direction);
     }
@@ -68,7 +69,6 @@ public abstract class AbstractAnimal implements Animal {
         this.turn(genome.get(nextGenome));
         Vector2d newPosition = position.add(direction.toUnitVector()).goAroundTheGlobe(width);
         nextGenome();
-
         if (map.canMoveTo(newPosition)) position = newPosition;
 
         age++;

@@ -7,7 +7,11 @@ import agh.oop.project.model.worlds.WorldMap;
 
 import java.util.*;
 
+import static java.lang.Math.min;
+
 public abstract class AbstractAnimal implements Animal {
+
+    protected static final Random rand = new Random();
 
     protected MapDirection direction;
     protected Vector2d position;
@@ -18,6 +22,13 @@ public abstract class AbstractAnimal implements Animal {
     protected int plantsEaten = 0;
     protected List<Animal> children = new ArrayList<>();
 
+    protected static ArrayList<Integer> createRandomGenome(int length){
+        ArrayList<Integer> genome = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            genome.add(rand.nextInt(8));
+        }
+        return genome;
+    }
 
     public String toString() {
         return (position + " " + direction);
@@ -94,8 +105,6 @@ public abstract class AbstractAnimal implements Animal {
 
     @Override
     public void mutateGenome(ArrayList<Integer> genome, int numOfMutations) {
-        Random rand = new Random();
-
         int length = genome.size();
         LinkedList<Integer> ableToChange = new LinkedList<>();
 
@@ -117,13 +126,12 @@ public abstract class AbstractAnimal implements Animal {
 
     @Override
     public ArrayList<Integer> createNewGenome(Animal animal, Specifications specifications) {
-        Random rand = new Random();
         ArrayList<Integer> newGenome;
         if (rand.nextBoolean()) newGenome = this.newGenome(animal);
         else newGenome = animal.newGenome(this);
 
         // mutations
-        int numberOfMutations = rand.nextInt(specifications.maximalAmountOfMutations()-specifications.minimalAmountOfMutations() + 1) + specifications.minimalAmountOfMutations();
+        int numberOfMutations = min(rand.nextInt(specifications.maximalAmountOfMutations()-specifications.minimalAmountOfMutations() + 1) + specifications.minimalAmountOfMutations(), specifications.genomeLength());
         mutateGenome(newGenome, numberOfMutations);
 
         return newGenome;

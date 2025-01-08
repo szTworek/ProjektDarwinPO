@@ -1,5 +1,5 @@
-old genome 5| new genome 7
-old genome 7| new genome 0
-old genome 2| new genome 7
-[0, 1, 7, 3, 4, 7, 6, 0]
+old genome 1| new genome 3
+old genome 5| new genome 6
+old genome 4| new genome 2
+[0, 3, 2, 3, 2, 6, 6, 7]
 [0, 1, 2, 3, 4, 5, 6, 7]

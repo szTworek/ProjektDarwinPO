@@ -17,10 +17,13 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
     @Override
     public void removeDeadAnimals() {
         lastDeadPositions.clear();
-        for (Map.Entry<Vector2d, List<Animal>> entry : livingAnimals.entrySet()) {
+        Map<Vector2d, List<Animal>> copyMap = new HashMap<>(livingAnimals);
+
+        for (Map.Entry<Vector2d, List<Animal>> entry : copyMap.entrySet()) {
             Vector2d position = entry.getKey();
             List<Animal> animals = entry.getValue();
-            for (Animal animal : animals) {
+            List<Animal> copyAnimals = new ArrayList<>(animals);
+            for (Animal animal : copyAnimals) {
                 if (animal.isDead()) {
                     lastDeadPositions.add(position);
                     animals.remove(animal);

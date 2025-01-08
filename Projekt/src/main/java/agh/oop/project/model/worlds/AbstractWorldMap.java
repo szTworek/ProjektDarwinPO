@@ -6,7 +6,10 @@ import agh.oop.project.model.WorldElement;
 import agh.oop.project.model.animals.Animal;
 import agh.oop.project.model.app.MapChangeListener;
 
+import java.awt.geom.GeneralPath;
 import java.util.*;
+
+import static java.lang.Math.max;
 
 public abstract class AbstractWorldMap implements WorldMap {
     private final Random random = new Random();
@@ -58,6 +61,16 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
     public Map<Vector2d, Plant> getPlants(){
         return plants;
+    }
+
+    protected List<Integer> getTheMostPopularGenotype() {
+        if (genotypes.isEmpty())
+            return null;
+
+        return genotypes.entrySet().stream()
+                .max(Comparator.comparingInt(Map.Entry::getValue))
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     public void statsUpdateWhenAnimalDied(Animal animal){
@@ -155,7 +168,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 if (animals.get(i).getEnergy()==animals.get(i+1).getEnergy() && ( // jak energia ta sama
                         animals.get(i).getAge()<animals.get(i+1).getAge() || ( // i jest młodszy
                         animals.get(i).getAge()==animals.get(i+1).getAge() && // lub jak jest w takim samym wieku
-                        animals.get(i).getChildAmount()<animals.get(i+1).getChildAmount() // i ma więcej dzieci                        ))
+                        animals.get(i).getChildAmount()<animals.get(i+1).getChildAmount() // i ma więcej dzieci
                 ))) {
                     Animal switchedAnimal = animals.get(i);
                     animals.set(i, animals.get(i+1));

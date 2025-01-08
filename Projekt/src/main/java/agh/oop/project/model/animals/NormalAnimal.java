@@ -11,7 +11,7 @@ import java.util.Random;
 public class NormalAnimal extends AbstractAnimal {
 
     public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy) {
-        this(position, genome, energy, MapDirection.values()[new Random().nextInt(8)], new Random().nextInt(genome.size()));
+        this(position, genome, energy, MapDirection.values()[rand.nextInt(8)], rand.nextInt(genome.size()));
     }
 
     public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy, MapDirection direction, int nextGenome) {
@@ -22,6 +22,11 @@ public class NormalAnimal extends AbstractAnimal {
         this.energy = energy;
     }
 
+    public NormalAnimal(Specifications specifications) {
+        this(new Vector2d(rand.nextInt(specifications.width()), rand.nextInt(specifications.height())),
+                createRandomGenome(specifications.genomeLength()),
+                specifications.startingEnergyForAnimals());
+    }
 
     @Override
     public void reproduce(Animal animal, WorldMap map, Specifications specs) {

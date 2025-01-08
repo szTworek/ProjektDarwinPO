@@ -10,7 +10,7 @@ import java.util.Random;
 public class CrazyAnimal extends AbstractAnimal {
 
     public CrazyAnimal(Vector2d position, ArrayList<Integer> genome, int energy) {
-        this(position, genome, energy, MapDirection.values()[new Random().nextInt(8)], new Random().nextInt(genome.size()));
+        this(position, genome, energy, MapDirection.values()[rand.nextInt(8)], rand.nextInt(genome.size()));
     }
 
     public CrazyAnimal(Vector2d position, ArrayList<Integer> genome, int energy, MapDirection direction, int nextGenome) {
@@ -21,8 +21,15 @@ public class CrazyAnimal extends AbstractAnimal {
         this.energy = energy;
     }
 
+    public CrazyAnimal(Specifications specifications) {
+        this(new Vector2d(rand.nextInt(specifications.width()), rand.nextInt(specifications.height())),
+                createRandomGenome(specifications.genomeLength()),
+                specifications.startingEnergyForAnimals());
+    }
+
     @Override
     public void reproduce(Animal animal, WorldMap map, Specifications specs) {
+
         ArrayList<Integer> newGenome = createNewGenome(animal, specs);
 
         decreaseParentsEnergy(animal, specs.energyUsageForReproduction());
@@ -34,7 +41,6 @@ public class CrazyAnimal extends AbstractAnimal {
 
     @Override
     public void nextGenome(){
-        Random rand = new Random();
         if(rand.nextInt(5)==1){
             nextGenome = rand.nextInt(genome.size()) - 1;
         }else{

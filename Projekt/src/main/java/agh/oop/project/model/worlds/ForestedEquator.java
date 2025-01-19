@@ -29,7 +29,7 @@ public class ForestedEquator  extends AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void getBetterArea(){
+    public void generateBetterArea(){
 
         betterArea.clear();
         worseArea.clear();

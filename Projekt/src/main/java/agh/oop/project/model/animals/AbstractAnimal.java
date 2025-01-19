@@ -100,9 +100,6 @@ public abstract class AbstractAnimal implements Animal {
         age++;
     }
 
-        // reproduce is separate for every animal subtype
-        // bcs crazyAnimal will create crazyAnimal etc
-
     @Override
     public void mutateGenome(ArrayList<Integer> genome, int numOfMutations) {
         int length = genome.size();
@@ -119,7 +116,6 @@ public abstract class AbstractAnimal implements Animal {
 
             int newGenome = rand.nextInt(8);
             while(newGenome == genome.get(changedGenomeIndex)) newGenome = rand.nextInt(8);
-            System.out.println("old genome " + genome.get(changedGenomeIndex) + "| new genome " + newGenome);
             genome.set(changedGenomeIndex, newGenome);
         }
     }

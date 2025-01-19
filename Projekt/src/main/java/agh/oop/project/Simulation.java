@@ -18,31 +18,26 @@ public class Simulation implements Runnable {
     private final Specifications specifications;
     private final WorldMap worldMap;
 
-    public Simulation(Specifications specifications, List<Vector2d> animalPositions, List<ArrayList<Integer>> animalGenomes, MapChangeListener presenter){
+    public Simulation(Specifications specifications, MapChangeListener presenter){
         this.specifications = specifications;
         if (specifications.normalGrowth()) worldMap = new ForestedEquator(specifications);
         else worldMap = new LiveGivingCorpse(specifications);
         worldMap.setListener(presenter);
-        initSimulation(animalPositions, animalGenomes);
+        initSimulation();
     }
 
     public WorldMap getWorldMap() {
         return worldMap;
     }
 
-    public void initSimulation(List<Vector2d> animalPositions, List<ArrayList<Integer>> animalGenomes) {
-        // zakładamy że spec.startingAnimalAmount jest tyle samo so positions.size i genomes.size'
+    public void initSimulation() {
 
-        if (specifications.normalGenome())
-            for (int i = 0; i < animalGenomes.size(); i++) {
-                worldMap.placeAnimal(new NormalAnimal(animalPositions.get(i), animalGenomes.get(i), specifications.startingEnergyForAnimals()));
-            }
-        else
-            for (int i = 0; i < animalGenomes.size(); i++) {
-                worldMap.placeAnimal(new CrazyAnimal(animalPositions.get(i), animalGenomes.get(i), specifications.startingEnergyForAnimals()));
-            }
+        for(int i = 0; i < specifications.startingAmountOfAnimals(); i++){
+            worldMap.placeAnimal(
+                specifications.normalGenome() ? new NormalAnimal(specifications)
+                        : new CrazyAnimal(specifications));
+        }
 
-        // dodanie roslin pierwszych
         worldMap.generatePlants(specifications.startingAmountOfPlants());
 
     }

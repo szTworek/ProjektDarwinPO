@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.min;
 
 public class Vector2d {
 
@@ -46,12 +47,12 @@ public class Vector2d {
         return Objects.hash(x, y);
     }
 
-    public boolean isNear(Vector2d other, int radius) {
-        return abs(this.x-other.x)+abs(this.y-other.y) <= radius;
+    public boolean isNear(Vector2d other, int radius, int width) {
+        return min(abs(this.x-other.x), width - abs(this.x-other.x)) + abs(this.y-other.y) <= radius;
     }
-    public boolean isNear(List<Vector2d> others, int radius) {
+    public boolean isNear(List<Vector2d> others, int radius, int width) {
         for(Vector2d other: others) {
-            if(isNear(other, radius)) return true;
+            if(isNear(other, radius, width)) return true;
         }
         return false;
     }

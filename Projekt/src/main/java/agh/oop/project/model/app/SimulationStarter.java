@@ -53,13 +53,6 @@ public class SimulationStarter {
         boolean normalGrowth=growthType.getValue().equals("Zalesione równiki");
         boolean normalGenome=genomeType.getValue().equals("Pełna losowość");
 
-        List<Vector2d> animalPositions= List.of(new Vector2d(2, 2), new Vector2d(5, 3), new Vector2d(3, 7));
-        List<ArrayList<Integer>> animalGenomes=List.of(
-                new ArrayList<>(List.of(2, 4, 6, 1, 5)),
-                new ArrayList<>(List.of(7, 1, 0, 4, 2)),
-                new ArrayList<>(List.of(2, 6, 5, 4, 3))
-        );
-
         Specifications specifications=new Specifications(
                 height.getValue(),
                 width.getValue(),
@@ -76,10 +69,10 @@ public class SimulationStarter {
                 genomeLength.getValue(),
                 normalGenome);
 
-        newWindow(specifications, animalPositions, animalGenomes);
+        newWindow(specifications);
     }
 
-    public void newWindow(Specifications specifications, List<Vector2d> animalPositions, List<ArrayList<Integer>> animalGenomes) throws IOException {
+    public void newWindow(Specifications specifications) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
         Stage stage = new Stage();
@@ -87,7 +80,7 @@ public class SimulationStarter {
         GridPane viewRoot = loader.load();
 
         SimulationPresenter presenter = loader.<SimulationPresenter>getController();
-        Simulation simulation=new Simulation(specifications,animalPositions,animalGenomes,presenter);
+        Simulation simulation=new Simulation(specifications, presenter);
         WorldMap map=simulation.getWorldMap();
         presenter.setWorldMap(map);
 

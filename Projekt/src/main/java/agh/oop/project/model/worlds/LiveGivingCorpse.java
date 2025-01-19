@@ -38,7 +38,7 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void getBetterArea(){
+    public void generateBetterArea(){
         // radius jest zależny od ilosci martwych zwierzaków, aby zawsze było około 20% lepszych pól
         int radius = 1;
         int expectedBetterArea = specifications.height()*specifications.width()/5;
@@ -53,7 +53,7 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
             for (int j = 0; j < specifications.height(); j++) {
                 Vector2d position = new Vector2d(i, j);
                 // radius to jak blisko miejsca zgonu musi być pole aby być lepsze
-                if (position.isNear(lastDeadPositions, radius))
+                if (position.isNear(lastDeadPositions, radius, specifications.width()))
                     betterArea.add(position);
                 else
                     worseArea.add(position);

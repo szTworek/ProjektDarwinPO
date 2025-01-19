@@ -119,7 +119,6 @@ public abstract class AbstractAnimal implements Animal {
 
             int newGenome = rand.nextInt(8);
             while(newGenome == genome.get(changedGenomeIndex)) newGenome = rand.nextInt(8);
-            System.out.println("old genome " + genome.get(changedGenomeIndex) + "| new genome " + newGenome);
             genome.set(changedGenomeIndex, newGenome);
         }
     }

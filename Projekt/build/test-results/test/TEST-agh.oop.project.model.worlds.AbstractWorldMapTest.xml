@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="agh.oop.project.model.worlds.AbstractWorldMapTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-01-19T01:07:11" hostname="VICTUSPIOTER" time="0.04">
+  <properties/>
+  <testcase name="generateBetterAreaTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.019"/>
+  <testcase name="manageReproductionAndPartialSortAnimalsTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.002"/>
+  <testcase name="moveAllAnimalsTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.002"/>
+  <testcase name="removeDeadAnimalsTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.001"/>
+  <testcase name="eatingAndReproductionTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.002"/>
+  <testcase name="getTheMostPopularGenotypeTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.002"/>
+  <testcase name="placeAnimalTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.001"/>
+  <testcase name="canMoveToTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.001"/>
+  <testcase name="generatePlantsTest()" classname="agh.oop.project.model.worlds.AbstractWorldMapTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

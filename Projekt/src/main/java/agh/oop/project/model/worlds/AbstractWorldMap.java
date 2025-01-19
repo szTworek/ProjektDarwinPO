@@ -280,10 +280,22 @@ public abstract class AbstractWorldMap implements WorldMap {
         return null;
     }
 
+    public List<Integer> getPopularGenotype(Map<List<Integer>, Integer> genotypes ){
+        List<Integer> result = new ArrayList<>(genotypes.size());
+        Integer maxi = 0;
+        for(List<Integer> i : genotypes.keySet()){
+            if (genotypes.get(i)>maxi){
+                maxi = genotypes.get(i);
+                result=i;
+            }
+        }
+        return result;
+    }
+
     public void setListener(MapChangeListener listener) {
         this.listener = listener;
     }
     public void mapChanges() {
-        listener.mapChanges(this, livingAnimalAmount, plants.size(), freeAreas, genotypes, (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
+        listener.mapChanges(this, livingAnimalAmount, plants.size(), freeAreas, getPopularGenotype(genotypes), (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
     }
 }

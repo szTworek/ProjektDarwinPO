@@ -31,17 +31,13 @@ public class Simulation implements Runnable {
     }
 
     public void initSimulation() {
-        int i = specifications.startingAmountOfAnimals();
-        if (specifications.normalGenome())
-            for (; i > 0; i--) {
-                worldMap.placeAnimal(new NormalAnimal(specifications));
-            }
-        else
-            for (; i > 0; i--) {
-                worldMap.placeAnimal(new CrazyAnimal(specifications));
-            }
 
-        // dodanie roslin pierwszych
+        for(int i = 0; i < specifications.startingAmountOfAnimals(); i++){
+            worldMap.placeAnimal(
+                specifications.normalGenome() ? new NormalAnimal(specifications)
+                        : new CrazyAnimal(specifications));
+        }
+
         worldMap.generatePlants(specifications.startingAmountOfPlants());
 
     }

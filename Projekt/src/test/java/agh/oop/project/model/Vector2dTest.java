@@ -37,15 +37,17 @@ class Vector2dTest {
         Vector2d v1 = new Vector2d(1,2);
         Vector2d v2 = new Vector2d(3,4);
         Vector2d v3 = new Vector2d(3,5);
+        Vector2d v4 = new Vector2d(9,2);
         List<Vector2d> list1 = List.of(v2,v3);
         List<Vector2d> list2 = List.of(v1,v2);
 
-        assertFalse(v1.isNear(v3, 2));
-        assertFalse(v1.isNear(v2, 2));
-        assertTrue(v2.isNear(v3, 2));
+        assertFalse(v1.isNear(v3, 2, 10));
+        assertFalse(v1.isNear(v2, 2, 10));
+        assertTrue(v2.isNear(v3, 2, 10));
+        assertTrue(v4.isNear(v1, 2, 10));
 
-        assertFalse(v1.isNear(list1, 2));
-        assertTrue(v3.isNear(list2, 2));
+        assertFalse(v1.isNear(list1, 2, 10));
+        assertTrue(v3.isNear(list2, 2, 10));
     }
 
     @Test

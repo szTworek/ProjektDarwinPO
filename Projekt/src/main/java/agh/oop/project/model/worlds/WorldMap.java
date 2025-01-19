@@ -5,6 +5,7 @@ import agh.oop.project.model.WorldElement;
 import agh.oop.project.model.animals.Animal;
 import agh.oop.project.model.app.MapChangeListener;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -15,6 +16,13 @@ public interface WorldMap {
     Map<Vector2d, Plant> getPlants();
 
     int getLivingAnimalAmount();
+    int getDeadAnimalAmount();
+    int getFreeAreas();
+    int getSumOfLivingEnergy();
+    int getSumOfDeadDays();
+    int getSumOfKids();
+    HashSet<Vector2d> getBetterArea();
+    List<Integer> getTheMostPopularGenotype();
 
     void placeAnimal(Animal animal);
 
@@ -30,8 +38,9 @@ public interface WorldMap {
 
     void eatingAndReproduction();
 
-    void getBetterArea();
+    void generateBetterArea();
 
+    void placePlant(Vector2d position);
     void generatePlants(int quantity);
 
     void moveAllAnimals();

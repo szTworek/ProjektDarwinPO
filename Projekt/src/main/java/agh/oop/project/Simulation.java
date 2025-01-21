@@ -87,7 +87,7 @@ public class Simulation implements Runnable {
                     }}
                 dayCycle();
                 day++;
-                Thread.sleep(500);
+                Thread.sleep(200);
                 if (worldMap.getLivingAnimalAmount() == 0) break;
             }
         }catch (InterruptedException e) {

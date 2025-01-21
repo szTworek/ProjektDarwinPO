@@ -23,6 +23,7 @@ public interface WorldMap {
     int getSumOfKids();
     HashSet<Vector2d> getBetterArea();
     List<Integer> getTheMostPopularGenotype();
+    public Animal getAnimalWithTheMostPopularGenotype(Vector2d position);
 
     void placeAnimal(Animal animal);
 

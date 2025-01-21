@@ -18,6 +18,7 @@
 
 .statsContainer {
     -fx-spacing: 20;
+    -fx-alignment: center;
 }
 
 .mapStatsContainer {
@@ -41,9 +42,11 @@
 }
 
 .day {
-    -fx-font-size: 19px;
-    -fx-alignment: center;
-    -fx-font-weight: bold;
+    -fx-font-family: "Rubik Vinyl", serif;
+    -fx-font-weight: 400;
+    -fx-font-size: 30px;
+    -fx-font-style: normal;
+    -fx-text-fill:#123524;
 }
 
 .mapContainer {
@@ -76,4 +79,23 @@
 .map{
     -fx-border-color: #3E7B27;
     -fx-border-width: 2px;
+}
+
+.checkButton {
+    -fx-background-color: #85A947;
+    -fx-text-fill: #EFE3C2;
+    -fx-padding: 10px 50px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.checkButton:pressed{
+    -fx-background-color: #3E7B27;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.checkButton:hover {
+    -fx-border-color: #3E7B27;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }

@@ -39,6 +39,8 @@
             <Label fx:id="animalLifespan"/>
             <Label fx:id="animalDeathDay"/>
         </VBox>
+        <Button styleClass="checkButton" fx:id="withPopularGenome" text="Zwierzęta z najpopularniejszym genotypem" onAction="#checkAnimalsWithPopularGenome"/>
+        <Button styleClass="checkButton" fx:id="fieldsPreferredByPlants" text="Pola preferowane przez rośliny" onAction="#checkFieldsPreferredByPlants"/>
     </VBox>
     </HBox>
 

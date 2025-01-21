@@ -101,6 +101,19 @@ public abstract class AbstractWorldMap implements WorldMap {
                 .orElse(null);
     }
 
+    public Animal getAnimalWithTheMostPopularGenotype(Vector2d position) {
+        List<Animal> animals = livingAnimals.get(position);
+        if (animals!=null){
+            sortAnimals(animals);
+            List<Integer> genotype= getTheMostPopularGenotype();
+            for (Animal animal : animals) {
+                if (animal.getGenome().equals(genotype)){
+                    return animal;
+                }
+        }}
+        return null;
+    }
+
     public void statsUpdateWhenAnimalDied(Animal animal){
         livingAnimalAmount--;
         deadAnimalAmount++;
@@ -321,23 +334,11 @@ public abstract class AbstractWorldMap implements WorldMap {
         return null;
     }
 
-    public List<Integer> getPopularGenotype(Map<List<Integer>, Integer> genotypes ){
-        List<Integer> result = new ArrayList<>(genotypes.size());
-        Integer maxi = 0;
-        for(List<Integer> i : genotypes.keySet()){
-            if (genotypes.get(i)>maxi){
-                maxi = genotypes.get(i);
-                result=i;
-            }
-        }
-        return result;
-    }
-
     public void setListener(MapChangeListener listener) {
         this.listener = listener;
     }
     public void mapChanges( int day) {
         if (listener != null)
-            listener.mapChanges(this, day, livingAnimalAmount, plants.size(), freeAreas, getPopularGenotype(genotypes), (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
+            listener.mapChanges(this, day, livingAnimalAmount, plants.size(), freeAreas, getTheMostPopularGenotype(), (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
     }
 }

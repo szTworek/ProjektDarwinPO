@@ -106,47 +106,83 @@ public class SimulationStarter {
     public void setDefaultSpecifications(ActionEvent e){
         Object source=e.getSource();
         if(source==smallSimulation){
-            height.getValueFactory().setValue(5);
-            width.getValueFactory().setValue(5);
-            startingAmountOfPlants.getValueFactory().setValue(3);
-            amountOfEnergyPerPlant.getValueFactory().setValue(5);
-            dailyPlantGrowth.getValueFactory().setValue(3);
-            startingAmountOfAnimals.getValueFactory().setValue(3);
+            height.getValueFactory().setValue(7);
+            width.getValueFactory().setValue(7);
+            startingAmountOfPlants.getValueFactory().setValue(6);
+            amountOfEnergyPerPlant.getValueFactory().setValue(2);
+            dailyPlantGrowth.getValueFactory().setValue(2);
+            startingAmountOfAnimals.getValueFactory().setValue(7);
             startingEnergyForAnimals.getValueFactory().setValue(12);
-            healthyLimit.getValueFactory().setValue(7);
+            healthyLimit.getValueFactory().setValue(4);
             energyUsageForReproduction.getValueFactory().setValue(5);
-            minimalAmountOfMutations.getValueFactory().setValue(5);
+            minimalAmountOfMutations.getValueFactory().setValue(1);
             maximalAmountOfMutations.getValueFactory().setValue(5);
             genomeLength.getValueFactory().setValue(5);
         }
         else if(source==mediumSimulation){
-            height.getValueFactory().setValue(10);
-            width.getValueFactory().setValue(10);
-            startingAmountOfPlants.getValueFactory().setValue(5);
-            amountOfEnergyPerPlant.getValueFactory().setValue(5);
-            dailyPlantGrowth.getValueFactory().setValue(5);
-            startingAmountOfAnimals.getValueFactory().setValue(5);
-            startingEnergyForAnimals.getValueFactory().setValue(5);
-            healthyLimit.getValueFactory().setValue(5);
+            height.getValueFactory().setValue(12);
+            width.getValueFactory().setValue(12);
+            startingAmountOfPlants.getValueFactory().setValue(30);
+            amountOfEnergyPerPlant.getValueFactory().setValue(2);
+            dailyPlantGrowth.getValueFactory().setValue(4);
+            startingAmountOfAnimals.getValueFactory().setValue(30);
+            startingEnergyForAnimals.getValueFactory().setValue(15);
+            healthyLimit.getValueFactory().setValue(8);
             energyUsageForReproduction.getValueFactory().setValue(5);
-            minimalAmountOfMutations.getValueFactory().setValue(5);
+            minimalAmountOfMutations.getValueFactory().setValue(1);
             maximalAmountOfMutations.getValueFactory().setValue(5);
             genomeLength.getValueFactory().setValue(5);
         }
         else{
-            height.getValueFactory().setValue(10);
-            width.getValueFactory().setValue(10);
-            startingAmountOfPlants.getValueFactory().setValue(5);
-            amountOfEnergyPerPlant.getValueFactory().setValue(5);
-            dailyPlantGrowth.getValueFactory().setValue(5);
-            startingAmountOfAnimals.getValueFactory().setValue(5);
-            startingEnergyForAnimals.getValueFactory().setValue(5);
-            healthyLimit.getValueFactory().setValue(5);
+            height.getValueFactory().setValue(17);
+            width.getValueFactory().setValue(17);
+            startingAmountOfPlants.getValueFactory().setValue(40);
+            amountOfEnergyPerPlant.getValueFactory().setValue(4);
+            dailyPlantGrowth.getValueFactory().setValue(3);
+            startingAmountOfAnimals.getValueFactory().setValue(40);
+            startingEnergyForAnimals.getValueFactory().setValue(20);
+            healthyLimit.getValueFactory().setValue(10);
             energyUsageForReproduction.getValueFactory().setValue(5);
-            minimalAmountOfMutations.getValueFactory().setValue(5);
+            minimalAmountOfMutations.getValueFactory().setValue(0);
             maximalAmountOfMutations.getValueFactory().setValue(5);
             genomeLength.getValueFactory().setValue(5);
         }
     }
+
+
+    @FXML
+    public void initialize() {
+        SpinnerValueFactory.IntegerSpinnerValueFactory minValueFactory =
+                (SpinnerValueFactory.IntegerSpinnerValueFactory) minimalAmountOfMutations.getValueFactory();
+        SpinnerValueFactory.IntegerSpinnerValueFactory maxValueFactory =
+                (SpinnerValueFactory.IntegerSpinnerValueFactory) maximalAmountOfMutations.getValueFactory();
+        SpinnerValueFactory.IntegerSpinnerValueFactory genomeLengthValidator =
+                (SpinnerValueFactory.IntegerSpinnerValueFactory) genomeLength.getValueFactory();
+
+
+        minimalAmountOfMutations.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue > maximalAmountOfMutations.getValue()) {
+                minimalAmountOfMutations.getValueFactory().setValue(oldValue);
+            }
+        });
+
+
+        maximalAmountOfMutations.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue < minimalAmountOfMutations.getValue()) {
+                maximalAmountOfMutations.getValueFactory().setValue(oldValue);
+            }
+        });
+        maximalAmountOfMutations.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue > genomeLength.getValue()) {
+                maximalAmountOfMutations.getValueFactory().setValue(oldValue);
+            }
+        });
+        genomeLength.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue < maximalAmountOfMutations.getValue()) {
+                genomeLength.getValueFactory().setValue(oldValue);
+            }
+        });
+    }
+
 
 }

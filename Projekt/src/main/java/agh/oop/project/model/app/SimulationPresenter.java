@@ -1,6 +1,7 @@
 package agh.oop.project.model.app;
 
 import agh.oop.project.model.worlds.Plant;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -20,9 +21,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class SimulationPresenter implements MapChangeListener{
     //stats:
@@ -72,24 +72,24 @@ public class SimulationPresenter implements MapChangeListener{
 
     private final Image monkeyGreen = new Image(Objects.requireNonNull(getClass().getResource("/images/monkey_green.png")).toExternalForm());
     private final Image monkeyYellow = new Image(Objects.requireNonNull(getClass().getResource("/images/monkey_yellow.png")).toExternalForm(),    30, // Szerokość docelowa
-            30, // Wysokość docelowa
-            false, // Zachowaj proporcje
+            30,
+            false,
             true);
     private final Image monkeyOrange = new Image(Objects.requireNonNull(getClass().getResource("/images/monkey_orange.png")).toExternalForm(),     30, // Szerokość docelowa
-            30, // Wysokość docelowa
-            false, // Zachowaj proporcje
+            30,
+            false,
             true);
     private final Image monkeyRed = new Image(Objects.requireNonNull(getClass().getResource("/images/monkey_red.png")).toExternalForm(),    30, // Szerokość docelowa
-            30, // Wysokość docelowa
-            false, // Zachowaj proporcje
+            30,
+            false,
             true);
     private final Image leaves = new Image(Objects.requireNonNull(getClass().getResource("/images/leaves.png")).toExternalForm(),    30, // Szerokość docelowa
-            30, // Wysokość docelowa
-            false, // Zachowaj proporcje
+            30,
+            false,
             true);
     private final Image cross= new Image(Objects.requireNonNull(getClass().getResource("/images/cross.png")).toExternalForm(),    30, // Szerokość docelowa
-            30, // Wysokość docelowa
-            false, // Zachowaj proporcje
+            30,
+            false,
             true);
 
 
@@ -119,20 +119,20 @@ public class SimulationPresenter implements MapChangeListener{
             label.setBackground(new Background(
                     new BackgroundImage(
                             monkeyGreen,
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundPosition.CENTER,          // Wycentruj obraz
-                            new BackgroundSize(100, 100, true, true, true, false)  // Dopasowanie
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.CENTER,
+                            new BackgroundSize(100, 100, true, true, true, false)
                     )
             ));
         } else if (animal.getEnergy() >= 10) {
             label.setBackground(new Background(
                     new BackgroundImage(
                             monkeyYellow,
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundPosition.CENTER,          // Wycentruj obraz
-                            new BackgroundSize(100, 100, true, true, true, false)   // Dopasowanie
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.CENTER,
+                            new BackgroundSize(100, 100, true, true, true, false)
                     )
             ));
 
@@ -140,26 +140,58 @@ public class SimulationPresenter implements MapChangeListener{
             label.setBackground(new Background(
                     new BackgroundImage(
                             monkeyOrange,
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundPosition.CENTER,          // Wycentruj obraz
-                            new BackgroundSize(100, 100, true, true, true, false)  // Dopasowanie
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.CENTER,
+                            new BackgroundSize(100, 100, true, true, true, false)
                     )
             ));
         } else {
             label.setBackground(new Background(
                     new BackgroundImage(
                             monkeyRed,
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                            BackgroundPosition.CENTER,          // Wycentruj obraz
-                            new BackgroundSize(100, 100, true, true, true, false)  // Dopasowanie
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.CENTER,
+                            new BackgroundSize(100, 100, true, true, true, false)
                     )
             ));
 
         }
     }
-    public void drawMap(){
+
+    public void markedLabel(Label label, int variant) {
+        Color color;
+        if (variant==0){
+        color=Color.RED;}
+        else{
+            color=Color.WHITE;
+        }
+
+        label.setBorder(new Border(new BorderStroke(
+                color,
+                BorderStrokeStyle.SOLID,
+                new CornerRadii(0),
+                new BorderWidths(2))));
+    }
+
+    public void presentPlantOrCross(Label label, Image image) {
+        label.setBackground(new Background(
+                new BackgroundImage(
+                        image,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(100, 100, true, true, true, false)
+                )
+        ));
+    }
+
+    public void drawMap(int variant) {
+
+//        variant = 0 podstawowy
+//        variant = 1 wyróżnione zwierzęta z dominującym genomem
+//        variant = 2 wyróżnione preferowane pola
         clearGrid();
 
 
@@ -182,46 +214,40 @@ public class SimulationPresenter implements MapChangeListener{
                 Vector2d field=new Vector2d(x, y);
                 label.setPrefSize(CELL_SIZE, CELL_SIZE);
                 label.setText(" ");
+                if(variant==2){
+                    HashSet<Vector2d> preferredFields=map.getBetterArea();
+                    if (preferredFields.contains(field)){
+                        markedLabel(label,1);
+                }}
                 if (followedAnimal!=null && field.equals(followedAnimal.getPosition())) {
                     followedLabel=label;
                     object=followedAnimal;
                     if (followedAnimal.isDead()){
-                        label.setBackground(new Background(
-                                new BackgroundImage(
-                                        cross,
-                                        BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                                        BackgroundRepeat.NO_REPEAT,         // Bez powtarzania
-                                        BackgroundPosition.CENTER,          // Wycentruj obraz
-                                        new BackgroundSize(100, 100, true, true, true, false)  // Dopasowanie
-                                )
-                        ));
+                        presentPlantOrCross(label,cross);
                     }
                     else {
                         presentAnimal(label, followedAnimal);
                     }
-                    label.setBorder(new Border(new BorderStroke(
-                            Color.RED,
-                            BorderStrokeStyle.SOLID,
-                            new CornerRadii(0),
-                            new BorderWidths(2))));
+                    markedLabel(label,0);
                 }else{
                     object = map.objectAt(new Vector2d(x, y));
                     if (object instanceof Animal) {
                         presentAnimal(label,(Animal)object);
                     }else if(object instanceof Plant) {
-                        label.setBackground(new Background(
-                                new BackgroundImage(
-                                        leaves,
-                                        BackgroundRepeat.NO_REPEAT,
-                                        BackgroundRepeat.NO_REPEAT,
-                                        BackgroundPosition.CENTER,
-                                        new BackgroundSize(100, 100, true, true, true, false)
-                                )
-                        ));
+                        presentPlantOrCross(label,leaves);
                     }
                 }
-                if (object instanceof Animal) {
-                    label.setOnMouseClicked(event -> onAnimalClicked(event, (Animal) object));
+                if (variant==1){
+                    Animal animalWithTheMostPopularGenome=map.getAnimalWithTheMostPopularGenotype(field);
+                    if(animalWithTheMostPopularGenome!=null){
+                        object=animalWithTheMostPopularGenome;
+                        presentAnimal(label,(Animal) object);
+                        markedLabel(label,1);
+                }
+                }
+                Object finalObject=object;
+                if (finalObject instanceof Animal) {
+                    label.setOnMouseClicked(event -> onAnimalClicked(event, (Animal) finalObject));
                 }
                 mapGrid.add(label, x, height - y-1);
                 GridPane.setHalignment(label, HPos.CENTER);
@@ -236,11 +262,7 @@ public class SimulationPresenter implements MapChangeListener{
 
             if (event.getSource() instanceof Label label) {
                 followedLabel = label;
-                followedLabel.setBorder(new Border(new BorderStroke(
-                        Color.RED,
-                        BorderStrokeStyle.SOLID,
-                        new CornerRadii(0),
-                        new BorderWidths(2))));
+                markedLabel(followedLabel,0);
         }}
 
 
@@ -291,7 +313,7 @@ public class SimulationPresenter implements MapChangeListener{
     @Override
     public void mapChanges(WorldMap worldMap,int day, int numberOfAnimals, int numberOfPlants, int freeAreas, List<Integer> genotypes, float averageEnergy, float averageLifespan, float averageNumberOfChildren) {
         Platform.runLater(() -> {
-            drawMap();
+            drawMap(0);
             dayLabel.setText("Dzień: " + day );
             numberOfAnimalsLabel.setText("Ilość zwierząt: "+String.valueOf(numberOfAnimals));
             numberOfPlantsLabel.setText("Ilość roślin: "+String.valueOf(numberOfPlants));
@@ -320,4 +342,14 @@ public class SimulationPresenter implements MapChangeListener{
             System.out.println(e.getMessage());
         }
     }
+
+    public void checkAnimalsWithPopularGenome() {
+        drawMap(1);
+    }
+
+    public void checkFieldsPreferredByPlants() {
+        drawMap(2);
+    }
 }
+
+

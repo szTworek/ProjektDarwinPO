@@ -6,21 +6,40 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane xmlns="http://javafx.com/javafx"
+<GridPane styleClass="background" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="agh.oop.project.model.app.SimulationPresenter"
-            minHeight="600.0" minWidth="600.0" style="-fx-padding: 50px">
-    <VBox>
-    <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER" prefWidth="400" prefHeight="300" />
-    <VBox>
-        <Label fx:id="numberOfAnimalsLabel"/>
-        <Label fx:id="numberOfPlantsLabel"/>
-        <Label fx:id="freeAreasLabel"/>
-        <Label fx:id="genotypesLabel"/>
-        <Label fx:id="averageEnergyLabel"/>
-        <Label fx:id="averageLifespanLabel"/>
-        <Label fx:id="averageNumberOfChildrenLabel"/>
+            >
+    <HBox styleClass="mainContainer">
+    <VBox styleClass="mapContainer">
+        <Label styleClass="day" fx:id="dayLabel" text="0"/>
+        <GridPane styleClass="map" fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER"/>
+        <Button fx:id="startStop" text="Stop" onAction="#onStartStopButtonClicked"/>
     </VBox>
+    <VBox styleClass="statsContainer">
+        <VBox styleClass="mapStatsContainer">
+            <Label styleClass="statsHeader" text="Statystyki ogólne:"/>
+            <Label fx:id="numberOfAnimalsLabel"/>
+            <Label fx:id="numberOfPlantsLabel"/>
+            <Label fx:id="freeAreasLabel"/>
+            <Label fx:id="genotypesLabel"/>
+            <Label fx:id="averageEnergyLabel"/>
+            <Label fx:id="averageLifespanLabel"/>
+            <Label fx:id="averageNumberOfChildrenLabel"/>
+        </VBox>
+        <VBox styleClass="animalStatsContainer">
+            <Label fx:id="animalStatsHeader" styleClass="statsHeader" text="Statystyki zwierzęcia:"/>
+            <Label fx:id="followedAnimalStats"/>
+            <Label fx:id="animalGenome"/>
+            <Label fx:id="activatedPartOfGenome"/>
+            <Label fx:id="animalEnergy"/>
+            <Label fx:id="eatenPlants"/>
+            <Label fx:id="howManyChildren"/>
+            <Label fx:id="howManyDescendant"/>
+            <Label fx:id="animalLifespan"/>
+            <Label fx:id="animalDeathDay"/>
+        </VBox>
     </VBox>
+    </HBox>
 
 </GridPane>

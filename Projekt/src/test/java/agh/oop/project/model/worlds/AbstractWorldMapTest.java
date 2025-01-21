@@ -44,11 +44,11 @@ class AbstractWorldMapTest {
         map.placeAnimal(animal2);
         assertEquals(2, map.getLivingAnimalAmount());
         animal1.decreaseEnergy(6);
-        map.removeDeadAnimals();
+        map.removeDeadAnimals(12);
         assertEquals(1, map.getLivingAnimalAmount());
         assertEquals(1, map.getLivingAnimals().get(position).size());
         animal2.decreaseEnergy(7);
-        map.removeDeadAnimals();
+        map.removeDeadAnimals(12);
         assertEquals(0, map.getLivingAnimalAmount());
         assertEquals(0, map.getLivingAnimals().size());
     }
@@ -217,19 +217,19 @@ class AbstractWorldMapTest {
 
         Animal animal1 = new NormalAnimal(new Vector2d(5,5), genomes, 0, MapDirection.NORTH, 0);
         map2.placeAnimal(animal1);
-        map2.removeDeadAnimals();
+        map2.removeDeadAnimals(12);
         map2.generateBetterArea();
         assertEquals(25, map2.getBetterArea().size());
 
         Animal animal2 = new NormalAnimal(new Vector2d(7,8), genomes, 0, MapDirection.NORTH, 0);
         map2.placeAnimal(animal2);
-        map2.removeDeadAnimals();
+        map2.removeDeadAnimals(12);
         map2.generateBetterArea();
         assertEquals(21, map2.getBetterArea().size());
 
         map2.placeAnimal(animal1);
         map2.placeAnimal(animal2);
-        map2.removeDeadAnimals();
+        map2.removeDeadAnimals(12);
         map2.generateBetterArea();
         assertEquals(25, map2.getBetterArea().size());
     }

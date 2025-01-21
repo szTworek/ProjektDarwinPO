@@ -26,7 +26,7 @@ public interface WorldMap {
 
     void placeAnimal(Animal animal);
 
-    void removeDeadAnimals();
+    void removeDeadAnimals(int day);
 
     boolean isPlantAt(Vector2d position);
 

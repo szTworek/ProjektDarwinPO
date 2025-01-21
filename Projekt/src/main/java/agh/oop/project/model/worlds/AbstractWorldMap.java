@@ -29,6 +29,7 @@ public abstract class AbstractWorldMap implements WorldMap {
          średniego poziomu energii dla żyjących zwierzaków,
          średniej długości życia zwierzaków dla martwych zwierzaków (wartość uwzględnia wszystkie nieżyjące zwierzaki - od początku symulacji),
          średniej liczby dzieci dla żyjących zwierzaków (wartość uwzględnia wszystkie powstałe zwierzaki, a nie tylko zwierzaki powstałe w danej epoce).
+
     */
     protected int livingAnimalAmount = 0;
     protected int deadAnimalAmount = 0;
@@ -107,7 +108,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         sumOfKids -= animal.getChildAmount();
 
         if(livingAnimals.get(animal.getPosition()).isEmpty() && !plants.containsKey(animal.getPosition())) freeAreas++;
-        mapChanges();
+//        mapChanges();
     }
     public void statsUpdateWhenAnimalPlaced(Animal animal){
         livingAnimalAmount++;
@@ -116,7 +117,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         sumOfLivingEnergy += animal.getEnergy();
 
         if(livingAnimals.get(animal.getPosition()).size() == 1 && !plants.containsKey(animal.getPosition())) freeAreas--;
-        mapChanges();
+//        mapChanges();
     }
     public void statsUpdateWhenPlantPlaced(Vector2d position) {
         if (!livingAnimals.containsKey(position) && !isPlantAt(position)) { // Replaced plants.containsKey(position)
@@ -146,13 +147,14 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void removeDeadAnimals() {
+    public void removeDeadAnimals(int day) {
         for (Map.Entry<Vector2d, List<Animal>> entry : new ArrayList<>(livingAnimals.entrySet())) {
             Vector2d position = entry.getKey();
             List<Animal> animals = entry.getValue();
 
             animals.removeIf(animal -> {
                 if (animal.isDead()) {
+                    animal.setDeathDay(day);
                     statsUpdateWhenAnimalDied(animal);
                     return true;
                 }
@@ -162,6 +164,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 livingAnimals.remove(position);
             }
         }
+        mapChanges(day);
     }
 
     @Override
@@ -231,7 +234,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             }
             manageReproduction(animals);
         }
-        mapChanges();
+//        mapChanges();
     }
 
     private HashSet<Vector2d> removePlantFieldsFromArea(HashSet<Vector2d> area){
@@ -274,7 +277,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             statsUpdateWhenPlantPlaced(position);
             placePlant(position);
         }
-        mapChanges();
+//        mapChanges();
     }
 
     @Override
@@ -284,7 +287,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 move(animal);
             }
         }
-        mapChanges();
+//        mapChanges();
     }
 
     @Override
@@ -333,8 +336,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     public void setListener(MapChangeListener listener) {
         this.listener = listener;
     }
-    public void mapChanges() {
+    public void mapChanges( int day) {
         if (listener != null)
-            listener.mapChanges(this, livingAnimalAmount, plants.size(), freeAreas, getPopularGenotype(genotypes), (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
+            listener.mapChanges(this, day, livingAnimalAmount, plants.size(), freeAreas, getPopularGenotype(genotypes), (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
     }
 }

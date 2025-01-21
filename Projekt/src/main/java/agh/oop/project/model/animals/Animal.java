@@ -37,6 +37,8 @@ public interface Animal extends WorldElement {
     // status of animal
     boolean isHealthy(Specifications specs);
     boolean isDead();
+    int getDeathDay();
+    void setDeathDay(int day);
 
     //genome manipulations
     void nextGenome();

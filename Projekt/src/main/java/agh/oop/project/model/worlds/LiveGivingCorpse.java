@@ -15,7 +15,7 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void removeDeadAnimals() {
+    public void removeDeadAnimals(int day) {
         lastDeadPositions.clear();
         Map<Vector2d, List<Animal>> copyMap = new HashMap<>(livingAnimals);
 
@@ -25,9 +25,9 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
             List<Animal> copyAnimals = new ArrayList<>(animals);
             for (Animal animal : copyAnimals) {
                 if (animal.isDead()) {
+                    animal.setDeathDay(day);
                     lastDeadPositions.add(position);
                     animals.remove(animal);
-
                     statsUpdateWhenAnimalDied(animal);
 
                     if (animals.isEmpty()) livingAnimals.remove(position);
@@ -35,6 +35,7 @@ public class LiveGivingCorpse  extends AbstractWorldMap implements WorldMap {
                 }
             }
         }
+        mapChanges(day);
     }
 
     @Override

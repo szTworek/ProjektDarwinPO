@@ -18,6 +18,7 @@ public abstract class AbstractAnimal implements Animal {
     protected ArrayList<Integer> genome;
     protected int nextGenome;
     protected int energy;
+    protected int deathDay;
     protected int age = 0;
     protected int plantsEaten = 0;
     protected List<Animal> children = new ArrayList<>();
@@ -72,6 +73,16 @@ public abstract class AbstractAnimal implements Animal {
     @Override
     public int getAge(){
         return age;
+    }
+
+    @Override
+    public void setDeathDay(int day){
+        deathDay = day;
+    }
+
+    @Override
+    public int getDeathDay(){
+        return deathDay;
     }
 
     @Override

@@ -49,6 +49,13 @@ public class SimulationStarter {
     @FXML
     private Button startButton;
 
+    @FXML
+    private Button smallSimulation;
+    @FXML
+    private Button mediumSimulation;
+    @FXML
+    private Button largeSimulation;
+
     public void onSimulationStartClicked(ActionEvent e) throws IOException {
         boolean normalGrowth=growthType.getValue().equals("Zalesione równiki");
         boolean normalGenome=genomeType.getValue().equals("Pełna losowość");
@@ -83,21 +90,63 @@ public class SimulationStarter {
         Simulation simulation=new Simulation(specifications, presenter);
         WorldMap map=simulation.getWorldMap();
         presenter.setWorldMap(map);
-
-        ExtendedThread thread = new ExtendedThread(simulation);
-        thread.start();
-
+        presenter.setThread(simulation.getThread());
         configureStage(stage, viewRoot);
         stage.show();
     }
     private void configureStage(Stage stage, GridPane viewRoot) {
-        var scene = new Scene(viewRoot);
+        var scene = new Scene(viewRoot,0.7*1792,0.7*1024 );
+        scene.getStylesheets().add("simulationPageStyle.css");
         stage.setScene(scene);
         stage.setTitle("Simulation");
+        stage.setResizable(false);
 
-        stage.minWidthProperty().bind(viewRoot.minWidthProperty());
-        stage.minHeightProperty().bind(viewRoot.minHeightProperty());
     }
 
+    public void setDefaultSpecifications(ActionEvent e){
+        Object source=e.getSource();
+        if(source==smallSimulation){
+            height.getValueFactory().setValue(5);
+            width.getValueFactory().setValue(5);
+            startingAmountOfPlants.getValueFactory().setValue(3);
+            amountOfEnergyPerPlant.getValueFactory().setValue(5);
+            dailyPlantGrowth.getValueFactory().setValue(3);
+            startingAmountOfAnimals.getValueFactory().setValue(3);
+            startingEnergyForAnimals.getValueFactory().setValue(12);
+            healthyLimit.getValueFactory().setValue(7);
+            energyUsageForReproduction.getValueFactory().setValue(5);
+            minimalAmountOfMutations.getValueFactory().setValue(5);
+            maximalAmountOfMutations.getValueFactory().setValue(5);
+            genomeLength.getValueFactory().setValue(5);
+        }
+        else if(source==mediumSimulation){
+            height.getValueFactory().setValue(10);
+            width.getValueFactory().setValue(10);
+            startingAmountOfPlants.getValueFactory().setValue(5);
+            amountOfEnergyPerPlant.getValueFactory().setValue(5);
+            dailyPlantGrowth.getValueFactory().setValue(5);
+            startingAmountOfAnimals.getValueFactory().setValue(5);
+            startingEnergyForAnimals.getValueFactory().setValue(5);
+            healthyLimit.getValueFactory().setValue(5);
+            energyUsageForReproduction.getValueFactory().setValue(5);
+            minimalAmountOfMutations.getValueFactory().setValue(5);
+            maximalAmountOfMutations.getValueFactory().setValue(5);
+            genomeLength.getValueFactory().setValue(5);
+        }
+        else{
+            height.getValueFactory().setValue(10);
+            width.getValueFactory().setValue(10);
+            startingAmountOfPlants.getValueFactory().setValue(5);
+            amountOfEnergyPerPlant.getValueFactory().setValue(5);
+            dailyPlantGrowth.getValueFactory().setValue(5);
+            startingAmountOfAnimals.getValueFactory().setValue(5);
+            startingEnergyForAnimals.getValueFactory().setValue(5);
+            healthyLimit.getValueFactory().setValue(5);
+            energyUsageForReproduction.getValueFactory().setValue(5);
+            minimalAmountOfMutations.getValueFactory().setValue(5);
+            maximalAmountOfMutations.getValueFactory().setValue(5);
+            genomeLength.getValueFactory().setValue(5);
+        }
+    }
 
 }

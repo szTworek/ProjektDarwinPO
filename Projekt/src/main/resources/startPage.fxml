@@ -35,10 +35,16 @@
         <VBox spacing="10" style="-fx-padding: 20;" alignment="CENTER">
             <Label text="Wprowadź specyfikacje symulacji" style="-fx-font-size:24px; -fx-font-weight: bold; "/>
             <HBox spacing="10" alignment="CENTER">
+                <Label text="Ustaw domyślne wartości świata: " style="-fx-font-size:15px; -fx-font-weight: bold; "/>
+                <Button styleClass="typeWorldButton" fx:id="smallSimulation" text="Mały" onAction="#setDefaultSpecifications"/>
+                <Button styleClass="typeWorldButton" fx:id="mediumSimulation" text="Średni" onAction="#setDefaultSpecifications"/>
+                <Button styleClass="typeWorldButton" fx:id="largeSimulation" text="Duży" onAction="#setDefaultSpecifications"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
                 <Label text="Wysokość:" />
                 <Spinner fx:id="height" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="50" initialValue="7" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="17" initialValue="10" />
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -46,15 +52,16 @@
                 <Label text="Szerokość:" />
                 <Spinner fx:id="width" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="50" initialValue="7" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="17" initialValue="10" />
                     </valueFactory>
                 </Spinner>
             </HBox>
             <HBox spacing="10" alignment="CENTER">
-                <Label text="Początkowa ilość roślin:" />
+                <Label text="Początkowa liczba roślin:" />
                 <Spinner fx:id="startingAmountOfPlants" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="500" initialValue="3" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="289" initialValue="3" />
+<!--                        validator-->
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -62,15 +69,15 @@
                 <Label text="Energia otrzymywana z jednej rośliny:" />
                 <Spinner fx:id="amountOfEnergyPerPlant" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="10" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="10" initialValue="2" />
                     </valueFactory>
                 </Spinner>
             </HBox>
             <HBox spacing="10" alignment="CENTER">
-                <Label text="Ilość nowych roślin każdego dnia:" />
+                <Label text="Liczba nowych roślin każdego dnia:" />
                 <Spinner fx:id="dailyPlantGrowth" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="500" initialValue="3" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="20" initialValue="3" />
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -92,7 +99,7 @@
                 <Label text="Początkowa liczba zwierząt:" />
                 <Spinner fx:id="startingAmountOfAnimals" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="500" initialValue="3" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="25" initialValue="3" />
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -100,7 +107,7 @@
                 <Label text="Energia startowa zwierząt:" />
                 <Spinner fx:id="startingEnergyForAnimals" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="50" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="5" max="20" initialValue="20" />
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -108,7 +115,7 @@
                 <Label text="Wymagana energia by zwierzak był najedzony:" />
                 <Spinner fx:id="healthyLimit" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="20" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="15" initialValue="5" />
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -116,7 +123,7 @@
                 <Label text="Energia zużywana podczas rozmnażania:" />
                 <Spinner fx:id="energyUsageForReproduction" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="20" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="5" initialValue="20" />
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -124,7 +131,7 @@
                 <Label text="Minimalna liczba mutacji u potomków:" />
                 <Spinner fx:id="minimalAmountOfMutations" promptText="Wprowadź wartość">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="100" initialValue="10" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="10" initialValue="10" />
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -133,6 +140,7 @@
                 <Spinner fx:id="maximalAmountOfMutations" promptText="Wprowadź wartość">
                     <valueFactory>
                         <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="100" initialValue="10" />
+<!--                        validator-->
                     </valueFactory>
                 </Spinner>
             </HBox>
@@ -157,6 +165,10 @@
                         <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="100" initialValue="5" />
                     </valueFactory>
                 </Spinner>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Czy chcesz zapisać statystyki do pliku .csv? " />
+                <CheckBox fx:id="csvCheck"/>
             </HBox>
             <Button fx:id="startButton" text="Start" onAction="#onSimulationStartClicked"/>
         </VBox>

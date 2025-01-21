@@ -5,6 +5,7 @@ import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.animals.Animal;
 import agh.oop.project.model.animals.CrazyAnimal;
 import agh.oop.project.model.animals.NormalAnimal;
+import agh.oop.project.model.app.ExtendedThread;
 import agh.oop.project.model.app.MapChangeListener;
 import agh.oop.project.model.worlds.ForestedEquator;
 import agh.oop.project.model.worlds.LiveGivingCorpse;
@@ -17,6 +18,9 @@ public class Simulation implements Runnable {
 
     private final Specifications specifications;
     private final WorldMap worldMap;
+    private final ExtendedThread thread;
+    private final Object lock = new Object();
+    private int day=0;
 
     public Simulation(Specifications specifications, MapChangeListener presenter){
         this.specifications = specifications;
@@ -24,10 +28,28 @@ public class Simulation implements Runnable {
         else worldMap = new LiveGivingCorpse(specifications);
         worldMap.setListener(presenter);
         initSimulation();
+        this.thread = new ExtendedThread(this);
+        thread.start();
+    }
+
+    public Specifications getSpecifications() {
+        return specifications;
     }
 
     public WorldMap getWorldMap() {
         return worldMap;
+    }
+
+    public ExtendedThread getThread() {
+        return thread;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public Object getLock() {
+        return lock;
     }
 
     public void initSimulation() {
@@ -49,7 +71,7 @@ public class Simulation implements Runnable {
         4) rozmnażanie się
         5) wzrost nowych roslin
         */
-        worldMap.removeDeadAnimals();
+        worldMap.removeDeadAnimals(day);
         worldMap.moveAllAnimals();
         worldMap.eatingAndReproduction();
         worldMap.generatePlants(specifications.dailyPlantGrowth());
@@ -57,11 +79,15 @@ public class Simulation implements Runnable {
     @Override
     public void run() {
 
-        int simLength = 100;
         try {
-            for (int i = 0; i < simLength; i++) {
+            while(!Thread.currentThread().isInterrupted()) {
+                synchronized (lock) {
+                    while (!thread.isRunning()) {
+                        lock.wait();
+                    }}
                 dayCycle();
-                Thread.sleep(200);
+                day++;
+                Thread.sleep(500);
                 if (worldMap.getLivingAnimalAmount() == 0) break;
             }
         }catch (InterruptedException e) {

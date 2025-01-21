@@ -24,7 +24,7 @@ public class SimulationApp extends Application {
         primaryStage.setScene(scene);
 
         primaryStage.setTitle("Simulation app");
-        scene.getStylesheets().add("style.css");
+        scene.getStylesheets().add("startPageStyle.css");
 
 
         primaryStage.minWidthProperty().bind(viewRoot.minWidthProperty());

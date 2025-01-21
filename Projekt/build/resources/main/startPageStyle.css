@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Vinyl&display=swap');
+
+#title {
+    -fx-font-family: "Rubik Vinyl", serif;
+    -fx-font-weight: 400;
+    -fx-font-size: 70px;
+    -fx-font-style: normal;
+    -fx-text-fill:#EFE3C2;
+}
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 16px;
+    -fx-base: #dac396;
+}
+
+.label, .button {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 16px;
+}
+
+.button {
+    -fx-background-color: #3E7B27;
+    -fx-text-fill: #EFE3C2;
+    -fx-padding: 20px 50px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.button:pressed{
+    -fx-background-color: #85A947;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.button:hover {
+    -fx-border-color: #85A947;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.combo-box {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.typeWorldButton {
+    -fx-background-color: #85A947;
+    -fx-text-fill: #EFE3C2;
+    -fx-padding: 10px 20px;
+}
+
+.typeWorldButton:pressed{
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-background-color: #3E7B27;
+}
+.typeWorldButton:hover {
+    -fx-border-color: #3E7B27;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}

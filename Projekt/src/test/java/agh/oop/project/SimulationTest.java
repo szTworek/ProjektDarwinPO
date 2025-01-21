@@ -32,13 +32,13 @@ class SimulationTest {
         Vector2d position2 = new Vector2d(2,2);
         ArrayList<Integer> genomes = new ArrayList<>();
         genomes.add(0);
-        Animal animal1 = new NormalAnimal(position1, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal2 = new NormalAnimal(position1, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0);
-        Animal animal3 = new NormalAnimal(position2, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0);
-        Animal animal4 = new NormalAnimal(position2, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0);
+        Animal animal1 = new NormalAnimal(position1, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new NormalAnimal(position1, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0, null, null);
+        Animal animal3 = new NormalAnimal(position2, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0, null, null);
+        Animal animal4 = new NormalAnimal(position2, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0, null, null);
 
-        Animal animalDead1 = new NormalAnimal(position1, genomes, 0, MapDirection.NORTH, 0);
-        Animal animalDead2 = new NormalAnimal(position2, genomes, 0, MapDirection.EAST, 0);
+        Animal animalDead1 = new NormalAnimal(position1, genomes, 0, MapDirection.NORTH, 0, null, null);
+        Animal animalDead2 = new NormalAnimal(position2, genomes, 0, MapDirection.EAST, 0, null, null);
 
         map.placeAnimal(animal1);
         map.placeAnimal(animal2);

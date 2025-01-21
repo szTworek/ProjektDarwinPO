@@ -22,8 +22,8 @@ class CrazyAnimalTest {
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genomes = new ArrayList<>();
         genomes.add(1);
-        Animal animal1 = new CrazyAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal2 = new CrazyAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0);
+        Animal animal1 = new CrazyAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new CrazyAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
         map.placeAnimal(animal1);
         map.placeAnimal(animal2);

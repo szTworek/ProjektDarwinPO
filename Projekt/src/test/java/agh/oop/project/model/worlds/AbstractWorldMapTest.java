@@ -20,8 +20,8 @@ class AbstractWorldMapTest {
     void placeAnimalTest(){
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genomes = new ArrayList<>();
-        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0);
+        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
 
         map.placeAnimal(animal1);
@@ -36,8 +36,8 @@ class AbstractWorldMapTest {
     void removeDeadAnimalsTest(){
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genomes = new ArrayList<>();
-        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0);
+        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
 
         map.placeAnimal(animal1);
@@ -80,8 +80,8 @@ class AbstractWorldMapTest {
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genomes = new ArrayList<>();
         genomes.add(0);
-        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0);
+        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.EAST, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
 
         map.placeAnimal(animal1);
@@ -108,12 +108,12 @@ class AbstractWorldMapTest {
         Vector2d position2 = new Vector2d(2,2);
         ArrayList<Integer> genomes = new ArrayList<>();
         genomes.add(0);
-        Animal animal1 = new NormalAnimal(position1, genomes, 10, MapDirection.NORTH, 0);
-        Animal animal2 = new NormalAnimal(position1, genomes, 8, MapDirection.EAST, 0);
-        Animal animal3 = new NormalAnimal(position1, genomes, 6, MapDirection.NORTH, 0);
-        Animal animal4 = new NormalAnimal(position1, genomes, 4, MapDirection.EAST, 0);
-        Animal animal5 = new NormalAnimal(position1, genomes, 2, MapDirection.NORTH, 0);
-        Animal animal6 = new NormalAnimal(position2, genomes, 10, MapDirection.EAST, 0);
+        Animal animal1 = new NormalAnimal(position1, genomes, 10, MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new NormalAnimal(position1, genomes, 8, MapDirection.EAST, 0, null, null);
+        Animal animal3 = new NormalAnimal(position1, genomes, 6, MapDirection.NORTH, 0, null, null);
+        Animal animal4 = new NormalAnimal(position1, genomes, 4, MapDirection.EAST, 0, null, null);
+        Animal animal5 = new NormalAnimal(position1, genomes, 2, MapDirection.NORTH, 0, null, null);
+        Animal animal6 = new NormalAnimal(position2, genomes, 10, MapDirection.EAST, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
         map.placeAnimal(animal1);
         map.placeAnimal(animal2);
@@ -159,12 +159,12 @@ class AbstractWorldMapTest {
         Vector2d position2 = new Vector2d(2,2);
         ArrayList<Integer> genomes = new ArrayList<>();
         genomes.add(0);
-        Animal animal1 = new NormalAnimal(position1, genomes, 10, MapDirection.NORTH, 0);
-        Animal animal2 = new NormalAnimal(position1, genomes, 8, MapDirection.SOUTH, 0);
-        Animal animal3 = new NormalAnimal(position1, genomes, 6, MapDirection.NORTH, 0);
-        Animal animal4 = new NormalAnimal(position1, genomes, 4, MapDirection.NW, 0);
-        Animal animal5 = new NormalAnimal(position1, genomes, 2, MapDirection.NORTH, 0);
-        Animal animal6 = new NormalAnimal(position2, genomes, 10, MapDirection.SOUTH, 0);
+        Animal animal1 = new NormalAnimal(position1, genomes, 10, MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new NormalAnimal(position1, genomes, 8, MapDirection.SOUTH, 0, null, null);
+        Animal animal3 = new NormalAnimal(position1, genomes, 6, MapDirection.NORTH, 0, null, null);
+        Animal animal4 = new NormalAnimal(position1, genomes, 4, MapDirection.NW, 0, null, null);
+        Animal animal5 = new NormalAnimal(position1, genomes, 2, MapDirection.NORTH, 0, null, null);
+        Animal animal6 = new NormalAnimal(position2, genomes, 10, MapDirection.SOUTH, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
         map.placeAnimal(animal1);
         map.placeAnimal(animal2);
@@ -215,13 +215,13 @@ class AbstractWorldMapTest {
         assertEquals(20, map1.getBetterArea().size());
         assertEquals(0, map2.getBetterArea().size());
 
-        Animal animal1 = new NormalAnimal(new Vector2d(5,5), genomes, 0, MapDirection.NORTH, 0);
+        Animal animal1 = new NormalAnimal(new Vector2d(5,5), genomes, 0, MapDirection.NORTH, 0, null, null);
         map2.placeAnimal(animal1);
         map2.removeDeadAnimals(12);
         map2.generateBetterArea();
         assertEquals(25, map2.getBetterArea().size());
 
-        Animal animal2 = new NormalAnimal(new Vector2d(7,8), genomes, 0, MapDirection.NORTH, 0);
+        Animal animal2 = new NormalAnimal(new Vector2d(7,8), genomes, 0, MapDirection.NORTH, 0, null, null);
         map2.placeAnimal(animal2);
         map2.removeDeadAnimals(12);
         map2.generateBetterArea();
@@ -267,12 +267,12 @@ class AbstractWorldMapTest {
         ArrayList<Integer> genome2 = new ArrayList<>();
         genome2.add(2);
 
-        Animal animal1 = new NormalAnimal(position1, genome1, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal2 = new NormalAnimal(position1, genome2, specifications.startingEnergyForAnimals(), MapDirection.SOUTH, 0);
-        Animal animal3 = new NormalAnimal(position1, genome0, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal4 = new NormalAnimal(position1, genome0, specifications.startingEnergyForAnimals(), MapDirection.NW, 0);
-        Animal animal5 = new NormalAnimal(position1, genome1, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
-        Animal animal6 = new NormalAnimal(position2, genome1, specifications.startingEnergyForAnimals(), MapDirection.SOUTH, 0);
+        Animal animal1 = new NormalAnimal(position1, genome1, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal2 = new NormalAnimal(position1, genome2, specifications.startingEnergyForAnimals(), MapDirection.SOUTH, 0, null, null);
+        Animal animal3 = new NormalAnimal(position1, genome0, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal4 = new NormalAnimal(position1, genome0, specifications.startingEnergyForAnimals(), MapDirection.NW, 0, null, null);
+        Animal animal5 = new NormalAnimal(position1, genome1, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
+        Animal animal6 = new NormalAnimal(position2, genome1, specifications.startingEnergyForAnimals(), MapDirection.SOUTH, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
 
         map.placeAnimal(animal1);

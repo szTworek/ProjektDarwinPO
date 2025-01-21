@@ -20,9 +20,11 @@ public class Simulation implements Runnable {
     private final WorldMap worldMap;
     private final ExtendedThread thread;
     private final Object lock = new Object();
-    private int day=0;
+    private int day = 1;
+    private boolean running = true;
 
-    public Simulation(Specifications specifications, MapChangeListener presenter){
+
+    public Simulation(Specifications specifications, MapChangeListener presenter) {
         this.specifications = specifications;
         if (specifications.normalGrowth()) worldMap = new ForestedEquator(specifications);
         else worldMap = new LiveGivingCorpse(specifications);
@@ -54,15 +56,20 @@ public class Simulation implements Runnable {
 
     public void initSimulation() {
 
-        for(int i = 0; i < specifications.startingAmountOfAnimals(); i++){
+        for (int i = 0; i < specifications.startingAmountOfAnimals(); i++) {
             worldMap.placeAnimal(
-                specifications.normalGenome() ? new NormalAnimal(specifications)
-                        : new CrazyAnimal(specifications));
+                    specifications.normalGenome() ? new NormalAnimal(specifications)
+                            : new CrazyAnimal(specifications));
         }
 
         worldMap.generatePlants(specifications.startingAmountOfPlants());
 
     }
+
+    public void endSimulation() {
+        running = false;
+    }
+
     public void dayCycle() {
         /*
         1) usunięcie martwych zwierząt
@@ -76,21 +83,25 @@ public class Simulation implements Runnable {
         worldMap.eatingAndReproduction();
         worldMap.generatePlants(specifications.dailyPlantGrowth());
     }
+
     @Override
     public void run() {
 
         try {
-            while(!Thread.currentThread().isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted() && running) {
                 synchronized (lock) {
                     while (!thread.isRunning()) {
                         lock.wait();
-                    }}
+                    }
+                }
+
                 dayCycle();
                 day++;
-                Thread.sleep(200);
+
+                Thread.sleep(100);
                 if (worldMap.getLivingAnimalAmount() == 0) break;
             }
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

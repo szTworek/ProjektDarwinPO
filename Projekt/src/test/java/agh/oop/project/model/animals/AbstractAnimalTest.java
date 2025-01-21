@@ -25,9 +25,9 @@ class AbstractAnimalTest {
         genomes.add(2);
         genomes.add(3);
         genomes.add(4);
-        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals());
-        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals());
-        Animal animal3 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals());
+        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), null, null);
+        Animal animal2 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), null, null);
+        Animal animal3 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), null, null);
 
         animal1.reproduce(animal2, new ForestedEquator(specifications), specifications);
         animal2.reproduce(animal3, new ForestedEquator(specifications), specifications);
@@ -42,7 +42,7 @@ class AbstractAnimalTest {
     void turnTest(){
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genomes = new ArrayList<>();
-        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
+        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
 
         animal1.turn(1);
         assertEquals(MapDirection.NE, animal1.getDirection());
@@ -68,7 +68,7 @@ class AbstractAnimalTest {
         genomes.add(6);
         genomes.add(7);
         genomes.add(5);
-        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
+        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
 
         animal1.move(specifications.width(), map);
@@ -97,7 +97,7 @@ class AbstractAnimalTest {
         ArrayList<Integer> genome = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7));
         ArrayList<Integer> originalGenome = new ArrayList<>(genome);
         int numOfMutations = 3;
-        Animal animal1 = new NormalAnimal(new Vector2d(1, 1), genome, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0);
+        Animal animal1 = new NormalAnimal(new Vector2d(1, 1), genome, specifications.startingEnergyForAnimals(), MapDirection.NORTH, 0, null, null);
 
         animal1.mutateGenome(genome, numOfMutations);
 
@@ -119,7 +119,7 @@ class AbstractAnimalTest {
         genomes.add(0);
         genomes.add(1);
         genomes.add(6);
-        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.SOUTH, 0);
+        Animal animal1 = new NormalAnimal(position, genomes, specifications.startingEnergyForAnimals(), MapDirection.SOUTH, 0, null, null);
         WorldMap map = new ForestedEquator(specifications);
 
         animal1.move(specifications.width(), map);
@@ -156,8 +156,8 @@ class AbstractAnimalTest {
         genome2.add(1);
         genome2.add(1);
         genome2.add(1);
-        Animal animal1 = new NormalAnimal(position, genome1, 10);
-        Animal animal2 = new NormalAnimal(position, genome2, 10);
+        Animal animal1 = new NormalAnimal(position, genome1, 10, null, null);
+        Animal animal2 = new NormalAnimal(position, genome2, 10, null, null);
 
         ArrayList<Integer> resultGenome1 = new ArrayList<>();
         resultGenome1.add(0);
@@ -221,8 +221,8 @@ class AbstractAnimalTest {
         resultGenome4.add(1);
         resultGenome4.add(1);
         resultGenome4.add(0);
-        Animal animal1 = new NormalAnimal(position, genome1, 10);
-        Animal animal2 = new NormalAnimal(position, genome2, 10);
+        Animal animal1 = new NormalAnimal(position, genome1, 10, null, null);
+        Animal animal2 = new NormalAnimal(position, genome2, 10, null, null);
 
         assertEquals(resultGenome1, animal1.newGenome(animal2));
         assertEquals(resultGenome2, animal2.newGenome(animal1));
@@ -237,7 +237,7 @@ class AbstractAnimalTest {
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genome1 = new ArrayList<>();
         genome1.add(0);
-        Animal animal1 = new NormalAnimal(position, genome1, 10);
+        Animal animal1 = new NormalAnimal(position, genome1, 10, null, null);
 
         animal1.decreaseEnergy(3);
         assertEquals(7, animal1.getEnergy());
@@ -248,10 +248,10 @@ class AbstractAnimalTest {
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genome1 = new ArrayList<>();
         genome1.add(2);
-        Animal animal1 = new NormalAnimal(position, genome1, 10);
-        Animal animal2 = new NormalAnimal(position, genome1, 10);
-        Animal animal3 = new NormalAnimal(position, genome1, 10);
-        Animal animal4 = new NormalAnimal(position, genome1, 10);
+        Animal animal1 = new NormalAnimal(position, genome1, 10, null, null);
+        Animal animal2 = new NormalAnimal(position, genome1, 10, null, null);
+        Animal animal3 = new NormalAnimal(position, genome1, 10, null, null);
+        Animal animal4 = new NormalAnimal(position, genome1, 10, null, null);
 
         animal1.addChild(animal2);
         animal2.addChild(animal3);
@@ -268,7 +268,7 @@ class AbstractAnimalTest {
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genome1 = new ArrayList<>();
         genome1.add(0);
-        Animal animal1 = new NormalAnimal(position, genome1, 10);
+        Animal animal1 = new NormalAnimal(position, genome1, 10, null, null);
 
         animal1.eat(specifications);
 
@@ -280,7 +280,7 @@ class AbstractAnimalTest {
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genome1 = new ArrayList<>();
         genome1.add(0);
-        Animal animal1 = new NormalAnimal(position, genome1, specifications.startingEnergyForAnimals());
+        Animal animal1 = new NormalAnimal(position, genome1, specifications.startingEnergyForAnimals(), null, null);
 
         assertTrue(animal1.isHealthy(specifications));
         animal1.decreaseEnergy(3);
@@ -294,7 +294,7 @@ class AbstractAnimalTest {
         Vector2d position = new Vector2d(1,1);
         ArrayList<Integer> genome1 = new ArrayList<>();
         genome1.add(0);
-        Animal animal1 = new NormalAnimal(position, genome1, 10);
+        Animal animal1 = new NormalAnimal(position, genome1, 10, null, null);
 
         assertFalse(animal1.isDead());
         animal1.decreaseEnergy(9);
@@ -309,7 +309,7 @@ class AbstractAnimalTest {
         ArrayList<Integer> genome1 = new ArrayList<>();
         genome1.add(2);
         genome1.add(3);
-        Animal animal1 = new NormalAnimal(position, genome1, 10, MapDirection.NORTH, 0);
+        Animal animal1 = new NormalAnimal(position, genome1, 10, MapDirection.NORTH, 0, null, null);
 
         assertEquals(2, animal1.getNextGenome());
         animal1.nextGenome();

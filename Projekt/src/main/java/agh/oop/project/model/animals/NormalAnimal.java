@@ -10,22 +10,24 @@ import java.util.Random;
 
 public class NormalAnimal extends AbstractAnimal {
 
-    public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy) {
-        this(position, genome, energy, MapDirection.values()[rand.nextInt(8)], rand.nextInt(genome.size()));
+    public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy, Animal parent1, Animal parent2) {
+        this(position, genome, energy, MapDirection.values()[rand.nextInt(8)], rand.nextInt(genome.size()), parent1, parent2);
     }
 
-    public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy, MapDirection direction, int nextGenome) {
+    public NormalAnimal(Vector2d position, ArrayList<Integer> genome, int energy, MapDirection direction, int nextGenome, Animal parent1, Animal parent2) {
         this.direction = direction;
         this.position = position;
         this.genome = genome;
         this.nextGenome = nextGenome;
         this.energy = energy;
+        this.parent1 = parent1;
+        this.parent2 = parent2;
     }
 
     public NormalAnimal(Specifications specifications) {
         this(new Vector2d(rand.nextInt(specifications.width()), rand.nextInt(specifications.height())),
                 createRandomGenome(specifications.genomeLength()),
-                specifications.startingEnergyForAnimals());
+                specifications.startingEnergyForAnimals(), null, null);
     }
 
     @Override
@@ -34,10 +36,13 @@ public class NormalAnimal extends AbstractAnimal {
 
         decreaseParentsEnergy(animal, specs.energyUsageForReproduction());
 
-        NormalAnimal kid = new NormalAnimal(this.position, newGenome, 2*specs.energyUsageForReproduction());
+        NormalAnimal kid = new NormalAnimal(this.position, newGenome, 2*specs.energyUsageForReproduction(), this, animal);
 
         this.addChild(kid);
         animal.addChild(kid);
+
+        this.newDesc(kid);
+        animal.newDesc(kid);
 
         map.placeAnimal(kid);
     }

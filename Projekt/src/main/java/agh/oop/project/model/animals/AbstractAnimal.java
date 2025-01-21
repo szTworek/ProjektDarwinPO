@@ -21,7 +21,21 @@ public abstract class AbstractAnimal implements Animal {
     protected int deathDay;
     protected int age = 0;
     protected int plantsEaten = 0;
-    protected List<Animal> children = new ArrayList<>();
+    protected List<Animal> children = new LinkedList<>();
+    protected long numOfDesc = 0;
+    protected Animal parent1;
+    protected Animal parent2;
+    protected Animal recentDesc;
+
+    @Override
+    public void newDesc(Animal desc){
+        if (desc != recentDesc){
+            recentDesc = desc;
+            numOfDesc++;
+            if (parent1 != null) parent1.newDesc(desc);
+            if (parent2 != null) parent2.newDesc(desc);
+        }
+    }
 
     protected static ArrayList<Integer> createRandomGenome(int length){
         ArrayList<Integer> genome = new ArrayList<>();
@@ -71,6 +85,11 @@ public abstract class AbstractAnimal implements Animal {
     }
 
     @Override
+    public long getDescendantAmount() {
+        return numOfDesc;
+    }
+
+    @Override
     public int getAge(){
         return age;
     }
@@ -103,12 +122,11 @@ public abstract class AbstractAnimal implements Animal {
 
     @Override
     public void move(int width, WorldMap map) {
+        age++;
         this.turn(genome.get(nextGenome));
         Vector2d newPosition = position.add(direction.toUnitVector()).goAroundTheGlobe(width);
         nextGenome();
         if (map.canMoveTo(newPosition)) position = newPosition;
-
-        age++;
     }
 
     @Override
@@ -166,15 +184,6 @@ public abstract class AbstractAnimal implements Animal {
     @Override
     public void addChild(Animal kid){
         children.add(kid);
-    }
-
-    @Override
-    public int getDescendantAmount() {
-       int result = children.size();
-       for(Animal child: children) {
-            result += child.getDescendantAmount();
-       }
-        return result;
     }
 
     @Override

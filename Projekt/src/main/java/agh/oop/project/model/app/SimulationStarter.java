@@ -87,11 +87,17 @@ public class SimulationStarter {
         GridPane viewRoot = loader.load();
 
         SimulationPresenter presenter = loader.<SimulationPresenter>getController();
-        Simulation simulation=new Simulation(specifications, presenter);
-        WorldMap map=simulation.getWorldMap();
+        Simulation simulation = new Simulation(specifications, presenter);
+        WorldMap map = simulation.getWorldMap();
         presenter.setWorldMap(map);
         presenter.setThread(simulation.getThread());
         configureStage(stage, viewRoot);
+
+        stage.setOnCloseRequest(event -> {
+            System.out.println("Okno zostało zamknięte!");
+            simulation.endSimulation();
+        });
+
         stage.show();
     }
     private void configureStage(Stage stage, GridPane viewRoot) {

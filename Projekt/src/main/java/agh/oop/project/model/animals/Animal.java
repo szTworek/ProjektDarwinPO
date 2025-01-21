@@ -15,7 +15,7 @@ public interface Animal extends WorldElement {
     int getEnergy();
     int getAge();
     int getChildAmount();
-    int getDescendantAmount();
+    long getDescendantAmount();
     int getPlantsEaten();
 
     // moving
@@ -28,7 +28,7 @@ public interface Animal extends WorldElement {
     ArrayList<Integer> createNewGenome(Animal animal, Specifications specs);
     ArrayList<Integer> newGenome(Animal animal);
     void addChild(Animal child);
-
+    void newDesc(Animal desc);
     void decreaseEnergy(int amount);
 
     // eat

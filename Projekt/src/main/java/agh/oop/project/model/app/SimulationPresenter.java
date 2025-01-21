@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static java.lang.Math.round;
+
 public class SimulationPresenter implements MapChangeListener{
     //stats:
     @FXML
@@ -109,7 +111,7 @@ public class SimulationPresenter implements MapChangeListener{
     }
 
     private void clearGrid() {
-        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0));
+        mapGrid.getChildren().retainAll(mapGrid.getChildren().getFirst());
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
     }
@@ -290,6 +292,7 @@ public class SimulationPresenter implements MapChangeListener{
 
     @Override
     public void mapChanges(WorldMap worldMap,int day, int numberOfAnimals, int numberOfPlants, int freeAreas, List<Integer> genotypes, float averageEnergy, float averageLifespan, float averageNumberOfChildren) {
+
         Platform.runLater(() -> {
             drawMap();
             dayLabel.setText("Dzień: " + day );
@@ -297,9 +300,9 @@ public class SimulationPresenter implements MapChangeListener{
             numberOfPlantsLabel.setText("Ilość roślin: "+String.valueOf(numberOfPlants));
             freeAreasLabel.setText("Wolne pola: "+String.valueOf(freeAreas));
             genotypesLabel.setText("Najpopularniejszy genotyp: "+genotypes.toString());
-            averageEnergyLabel.setText("Średnia ilość energii zwierząt: "+String.valueOf(averageEnergy));
-            averageLifespanLabel.setText("Średnia długość życia: "+ String.valueOf(averageLifespan));
-            averageNumberOfChildrenLabel.setText("Średnia ilość dzieci: "+ String.valueOf(averageNumberOfChildren));
+            averageEnergyLabel.setText("Średnia ilość energii zwierząt: "+String.valueOf((float)round(averageEnergy*100)/100));
+            averageLifespanLabel.setText("Średnia długość życia: "+ String.valueOf((float)round(averageLifespan*100)/100));
+            averageNumberOfChildrenLabel.setText("Średnia ilość dzieci: "+ String.valueOf((float)round(averageNumberOfChildren*100)/100));
 
             animalStats();
         });

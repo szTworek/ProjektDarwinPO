@@ -32,6 +32,7 @@ public interface WorldMap {
 
     boolean canMoveTo( Vector2d position);
 
+    Animal getTheBestAnimal(List<Animal> animals);
     void sortAnimals(List<Animal> animals);
 
     void manageReproduction(List<Animal> animals);

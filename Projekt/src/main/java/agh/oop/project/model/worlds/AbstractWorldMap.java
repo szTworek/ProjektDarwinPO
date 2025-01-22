@@ -212,8 +212,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         List<Animal> copy = new ArrayList<>(animals);
         sortAnimals(copy);
 
-        if(copy.size()!=animals.size()) System.out.println("AAAA");
-
         return copy.getFirst();
     }
 

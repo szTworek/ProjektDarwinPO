@@ -15,7 +15,11 @@ import agh.oop.project.model.worlds.WorldMap;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Simulation implements Runnable {
@@ -101,11 +105,12 @@ public class Simulation implements Runnable {
     public void run() {
         try {
             if (saveToCsv) {
-                synchronized (fileNumber) {
-                    csvWriter = new CsvWriter("Dane_"+fileNumber+".csv");
-                    fileNumber++;
-                    csvWriter.writeHeader();
-                }
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss-ddMMyy");
+                String timestamp = LocalDateTime.now().format(formatter);
+
+                csvWriter = new CsvWriter("Dane" + fileNumber + "-" + timestamp + ".csv");
+                fileNumber++;
+                csvWriter.writeHeader();
             }
 
             while (!Thread.currentThread().isInterrupted() && running) {
@@ -117,7 +122,7 @@ public class Simulation implements Runnable {
 
                 dayCycle();
                 day++;
-                Thread.sleep(100);
+                Thread.sleep(500);
 
                 if (worldMap.getLivingAnimalAmount() == 0) break;
             }

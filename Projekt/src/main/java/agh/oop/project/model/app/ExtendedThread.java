@@ -12,14 +12,6 @@ public class ExtendedThread extends Thread {
         this.simulation = simulation;
     }
 
-
-
-    public ExtendedThread restart() {
-        ExtendedThread newExtendedThread = new ExtendedThread(simulation);
-        newExtendedThread.start();
-        return newExtendedThread;
-    }
-
     public boolean isRunning() {
         return running;
     }

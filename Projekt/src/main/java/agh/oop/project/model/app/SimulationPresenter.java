@@ -27,6 +27,7 @@ import java.util.List;
 import static java.lang.Math.round;
 
 public class SimulationPresenter implements MapChangeListener{
+
     //stats:
     @FXML
     private Label dayLabel;
@@ -71,6 +72,12 @@ public class SimulationPresenter implements MapChangeListener{
     private Label animalDeathDay;
     @FXML
     private Label followedLabel;
+    @FXML
+    private Button withPopularGenome;
+    @FXML
+    private Button fieldsPreferredByPlants;
+
+
 
     private final Image monkeyGreen = new Image(Objects.requireNonNull(getClass().getResource("/images/monkey_green.png")).toExternalForm());
     private final Image monkeyYellow = new Image(Objects.requireNonNull(getClass().getResource("/images/monkey_yellow.png")).toExternalForm(),    30, // Szerokość docelowa
@@ -94,6 +101,8 @@ public class SimulationPresenter implements MapChangeListener{
             false,
             true);
 
+
+
     private boolean followPopularGenome=false;
     private boolean followPreferredPlantField=false;
     private Animal followedAnimal;
@@ -101,6 +110,8 @@ public class SimulationPresenter implements MapChangeListener{
     private WorldMap map;
     private int height;
     private int width;
+
+
     public void setWorldMap(WorldMap map) {
         this.map = map;
         height = map.getHeight();
@@ -167,8 +178,12 @@ public class SimulationPresenter implements MapChangeListener{
         Color color;
         if (variant==0){
         color=Color.RED;}
+
+        else if(variant==1){
+            color=Color.web("#3E7B27");
+        }
         else{
-            color=Color.WHITE;
+            color=Color.web("#a02dec");
         }
 
         label.setBorder(new Border(new BorderStroke(
@@ -241,7 +256,7 @@ public class SimulationPresenter implements MapChangeListener{
                     if(animalWithTheMostPopularGenome!=null){
                         object=animalWithTheMostPopularGenome;
                         presentAnimal(label,(Animal) object);
-                        markedLabel(label,1);
+                        markedLabel(label,2);
                 }
                 }
                 Object finalObject=object;
@@ -344,12 +359,26 @@ public class SimulationPresenter implements MapChangeListener{
     }
 
     public void checkAnimalsWithPopularGenome() {
-        followPopularGenome = !followPopularGenome;
+        if(!followPopularGenome){
+            followPopularGenome = true;
+            withPopularGenome.setStyle("-fx-border-color: #a02dec; -fx-border-width: 2;-fx-border-radius: 10");
+        }
+        else {
+            followPopularGenome = false;
+            withPopularGenome.setStyle("-fx-border-color: none;");
+        }
         drawMap();
     }
 
     public void checkFieldsPreferredByPlants() {
-        followPreferredPlantField = !followPreferredPlantField;
+        if(!followPreferredPlantField){
+            followPreferredPlantField = true;
+            fieldsPreferredByPlants.setStyle("-fx-border-color: #3E7B27; -fx-border-width: 2;-fx-border-radius: 10");
+        }
+        else {
+            followPreferredPlantField = false;
+            fieldsPreferredByPlants.setStyle("-fx-border-color: none;");
+        }
         drawMap();
     }
 }

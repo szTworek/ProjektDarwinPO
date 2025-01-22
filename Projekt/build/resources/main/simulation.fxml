@@ -14,7 +14,7 @@
     <VBox styleClass="mapContainer">
         <Label styleClass="day" fx:id="dayLabel" text="0"/>
         <GridPane styleClass="map" fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER"/>
-        <Button fx:id="startStop" text="Stop" onAction="#onStartStopButtonClicked"/>
+        <Button styleClass="startButton" fx:id="startStop" text="Stop" onAction="#onStartStopButtonClicked"/>
     </VBox>
     <VBox styleClass="statsContainer">
         <VBox styleClass="mapStatsContainer">

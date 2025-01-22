@@ -137,8 +137,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         sumOfDeadDays += animal.getAge();
         sumOfKids -= animal.getChildAmount();
         sumOfLivingEnergy -= animal.getEnergy();
-
-//        mapChanges();
     }
 
     public void statsUpdateWhenAnimalPlaced(Animal animal) {
@@ -146,8 +144,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         genotypes.putIfAbsent(animal.getGenome(), 0);
         genotypes.replace(animal.getGenome(), genotypes.get(animal.getGenome()) + 1);
         sumOfLivingEnergy += animal.getEnergy();
-
-//        mapChanges();
     }
 
     private void statsUpdateWhenSex() {
@@ -263,7 +259,6 @@ public abstract class AbstractWorldMap implements WorldMap {
             }
             manageReproduction(animals);
         }
-//        mapChanges();
     }
 
     private HashSet<Vector2d> removePlantFieldsFromArea(HashSet<Vector2d> area) {
@@ -304,7 +299,6 @@ public abstract class AbstractWorldMap implements WorldMap {
 
             placePlant(position);
         }
-//        mapChanges();
     }
 
     @Override
@@ -318,7 +312,6 @@ public abstract class AbstractWorldMap implements WorldMap {
                 move(animal);
             }
         }
-//        mapChanges();
     }
 
     @Override

@@ -138,8 +138,8 @@ public class SimulationStarter {
             dailyPlantGrowth.getValueFactory().setValue(4);
             startingAmountOfAnimals.getValueFactory().setValue(30);
             startingEnergyForAnimals.getValueFactory().setValue(15);
-            healthyLimit.getValueFactory().setValue(8);
-            energyUsageForReproduction.getValueFactory().setValue(5);
+            healthyLimit.getValueFactory().setValue(10);
+            energyUsageForReproduction.getValueFactory().setValue(2);
             minimalAmountOfMutations.getValueFactory().setValue(1);
             maximalAmountOfMutations.getValueFactory().setValue(5);
             genomeLength.getValueFactory().setValue(5);

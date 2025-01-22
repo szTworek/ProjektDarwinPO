@@ -363,6 +363,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
     public void mapChanges( int day) {
         if (listener != null)
-            listener.mapChanges(this, day, livingAnimalAmount, plants.size(), freeAreas, getPopularGenotype(genotypes), (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
+            listener.mapChanges(this, day, livingAnimalAmount, plants.size(), getFreeAreas(), getPopularGenotype(genotypes), (float) sumOfLivingEnergy /livingAnimalAmount, (float) sumOfDeadDays /deadAnimalAmount, (float) sumOfKids /livingAnimalAmount );
     }
 }

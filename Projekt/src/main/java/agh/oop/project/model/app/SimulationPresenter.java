@@ -94,7 +94,8 @@ public class SimulationPresenter implements MapChangeListener{
             false,
             true);
 
-
+    private boolean followPopularGenome=false;
+    private boolean followPreferredPlantField=false;
     private Animal followedAnimal;
     private ExtendedThread thread;
     private WorldMap map;
@@ -189,11 +190,7 @@ public class SimulationPresenter implements MapChangeListener{
         ));
     }
 
-    public void drawMap(int variant) {
-
-//        variant = 0 podstawowy
-//        variant = 1 wyróżnione zwierzęta z dominującym genomem
-//        variant = 2 wyróżnione preferowane pola
+    public void drawMap() {
         clearGrid();
 
 
@@ -216,7 +213,7 @@ public class SimulationPresenter implements MapChangeListener{
                 Vector2d field=new Vector2d(x, y);
                 label.setPrefSize(CELL_SIZE, CELL_SIZE);
                 label.setText(" ");
-                if(variant==2){
+                if(followPreferredPlantField){
                     HashSet<Vector2d> preferredFields=map.getBetterArea();
                     if (preferredFields.contains(field)){
                         markedLabel(label,1);
@@ -239,7 +236,7 @@ public class SimulationPresenter implements MapChangeListener{
                         presentPlantOrCross(label,leaves);
                     }
                 }
-                if (variant==1){
+                if (followPopularGenome){
                     Animal animalWithTheMostPopularGenome=map.getAnimalWithTheMostPopularGenotype(field);
                     if(animalWithTheMostPopularGenome!=null){
                         object=animalWithTheMostPopularGenome;
@@ -316,7 +313,7 @@ public class SimulationPresenter implements MapChangeListener{
     public void mapChanges(WorldMap worldMap,int day, int numberOfAnimals, int numberOfPlants, int freeAreas, List<Integer> genotypes, float averageEnergy, float averageLifespan, float averageNumberOfChildren) {
 
         Platform.runLater(() -> {
-            drawMap(0);
+            drawMap();
             dayLabel.setText("Dzień: " + day );
             numberOfAnimalsLabel.setText("Ilość zwierząt: "+String.valueOf(numberOfAnimals));
             numberOfPlantsLabel.setText("Ilość roślin: "+String.valueOf(numberOfPlants));
@@ -347,11 +344,13 @@ public class SimulationPresenter implements MapChangeListener{
     }
 
     public void checkAnimalsWithPopularGenome() {
-        drawMap(1);
+        followPopularGenome = !followPopularGenome;
+        drawMap();
     }
 
     public void checkFieldsPreferredByPlants() {
-        drawMap(2);
+        followPreferredPlantField = !followPreferredPlantField;
+        drawMap();
     }
 }
 

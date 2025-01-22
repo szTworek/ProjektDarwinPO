@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,8 @@ public class SimulationStarter {
     private ComboBox<String> genomeType;
     @FXML
     private Spinner<Integer> genomeLength;
+    @FXML
+    private CheckBox csvCheck;
 
     @FXML
     private Button startButton;
@@ -55,6 +59,7 @@ public class SimulationStarter {
     private Button mediumSimulation;
     @FXML
     private Button largeSimulation;
+
 
     public void onSimulationStartClicked(ActionEvent e) throws IOException {
         boolean normalGrowth=growthType.getValue().equals("Zalesione równiki");
@@ -87,7 +92,7 @@ public class SimulationStarter {
         GridPane viewRoot = loader.load();
 
         SimulationPresenter presenter = loader.<SimulationPresenter>getController();
-        Simulation simulation = new Simulation(specifications, presenter);
+        Simulation simulation = new Simulation(specifications, presenter, csvCheck.isSelected());
         WorldMap map = simulation.getWorldMap();
         presenter.setWorldMap(map);
         presenter.setThread(simulation.getThread());

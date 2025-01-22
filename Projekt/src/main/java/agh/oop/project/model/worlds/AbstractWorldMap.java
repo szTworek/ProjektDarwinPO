@@ -1,15 +1,16 @@
 package agh.oop.project.model.worlds;
 
+import agh.oop.project.model.CsvWriter;
 import agh.oop.project.model.Specifications;
 import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.WorldElement;
 import agh.oop.project.model.animals.Animal;
 import agh.oop.project.model.app.MapChangeListener;
 
-import java.awt.geom.GeneralPath;
+import java.io.IOException;
 import java.util.*;
 
-import static java.lang.Math.max;
+import static java.lang.Math.round;
 
 public abstract class AbstractWorldMap implements WorldMap {
     private final Random random = new Random();
@@ -29,7 +30,6 @@ public abstract class AbstractWorldMap implements WorldMap {
          średniego poziomu energii dla żyjących zwierzaków,
          średniej długości życia zwierzaków dla martwych zwierzaków (wartość uwzględnia wszystkie nieżyjące zwierzaki - od początku symulacji),
          średniej liczby dzieci dla żyjących zwierzaków (wartość uwzględnia wszystkie powstałe zwierzaki, a nie tylko zwierzaki powstałe w danej epoce).
-
     */
     protected int livingAnimalAmount = 0;
     protected int deadAnimalAmount = 0;
@@ -41,6 +41,11 @@ public abstract class AbstractWorldMap implements WorldMap {
     public AbstractWorldMap(Specifications specifications) {
         this.specifications = specifications;
         upperRight = new Vector2d(specifications.width(), specifications.height());
+    }
+
+    @Override
+    public void writeStatsToFile(CsvWriter writer, int day) throws IOException {
+        writer.write("\"" + day + "\",\"" + livingAnimalAmount + "\",\"" + plants.size() + "\",\"" + getFreeAreas() + "\",\"" + getPopularGenotype(genotypes) + "\",\"" + (float) round((float) sumOfLivingEnergy / livingAnimalAmount * 100) / 100 + "\",\"" + (float) round((float) sumOfDeadDays / deadAnimalAmount * 100) / 100 + "\",\"" + (float) round((float) sumOfKids / livingAnimalAmount * 100) / 100 + "\"");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package agh.oop.project;
 
+import agh.oop.project.model.CsvWriter;
 import agh.oop.project.model.Specifications;
 import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.animals.Animal;
@@ -11,27 +12,39 @@ import agh.oop.project.model.worlds.ForestedEquator;
 import agh.oop.project.model.worlds.LiveGivingCorpse;
 import agh.oop.project.model.worlds.WorldMap;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation implements Runnable {
 
+    public static Integer fileNumber = 0;
     private final Specifications specifications;
     private final WorldMap worldMap;
     private final ExtendedThread thread;
     private final Object lock = new Object();
     private int day = 1;
     private boolean running = true;
+    private final boolean saveToCsv;
+    private CsvWriter csvWriter;
 
-
-    public Simulation(Specifications specifications, MapChangeListener presenter) {
+    public Simulation(Specifications specifications, MapChangeListener presenter, boolean saveToCsv) {
         this.specifications = specifications;
+        this.saveToCsv = saveToCsv;
         if (specifications.normalGrowth()) worldMap = new ForestedEquator(specifications);
         else worldMap = new LiveGivingCorpse(specifications);
         worldMap.setListener(presenter);
+
         initSimulation();
+
         this.thread = new ExtendedThread(this);
         thread.start();
+    }
+
+    public Simulation(Specifications specifications, MapChangeListener presenter) {
+        this(specifications, presenter, false);
     }
 
     public Specifications getSpecifications() {
@@ -86,24 +99,35 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
-
         try {
+            if (saveToCsv) {
+                synchronized (fileNumber) {
+                    csvWriter = new CsvWriter("Dane_"+fileNumber+".csv");
+                    fileNumber++;
+                    csvWriter.writeHeader();
+                }
+            }
+
             while (!Thread.currentThread().isInterrupted() && running) {
                 synchronized (lock) {
-                    while (!thread.isRunning()) {
-                        lock.wait();
-                    }
+                    while (!thread.isRunning()) lock.wait();
                 }
+
+                if (saveToCsv) worldMap.writeStatsToFile(csvWriter, day);
 
                 dayCycle();
                 day++;
-
                 Thread.sleep(100);
+
                 if (worldMap.getLivingAnimalAmount() == 0) break;
             }
-        } catch (InterruptedException e) {
+
+            if (saveToCsv) csvWriter.close();
+
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
 }

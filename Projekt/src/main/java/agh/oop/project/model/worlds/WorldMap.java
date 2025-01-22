@@ -1,10 +1,13 @@
 package agh.oop.project.model.worlds;
 
+import agh.oop.project.model.CsvWriter;
 import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.WorldElement;
 import agh.oop.project.model.animals.Animal;
 import agh.oop.project.model.app.MapChangeListener;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,4 +54,6 @@ public interface WorldMap {
     int getWidth();
     void setListener(MapChangeListener listener);
     WorldElement objectAt(Vector2d position);
+
+    void writeStatsToFile(CsvWriter writer, int day) throws IOException;
 }

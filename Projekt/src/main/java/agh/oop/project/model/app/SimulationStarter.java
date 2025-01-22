@@ -63,7 +63,7 @@ public class SimulationStarter {
 
     public void onSimulationStartClicked(ActionEvent e) throws IOException {
         boolean normalGrowth=growthType.getValue().equals("Zalesione równiki");
-        boolean normalGenome=genomeType.getValue().equals("Pełna losowość");
+        boolean normalGenome=genomeType.getValue().equals("Pełna predestynacja");
 
         Specifications specifications=new Specifications(
                 height.getValue(),
@@ -99,7 +99,6 @@ public class SimulationStarter {
         configureStage(stage, viewRoot);
 
         stage.setOnCloseRequest(event -> {
-            System.out.println("Okno zostało zamknięte!");
             simulation.endSimulation();
         });
 

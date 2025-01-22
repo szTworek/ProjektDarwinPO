@@ -148,12 +148,12 @@
                 <ComboBox fx:id="genomeType">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Pełna losowość"/>
+                            <String fx:value="Pełna predestynacja"/>
                             <String fx:value="Nieco szaleństwa"/>
                         </FXCollections>
                     </items>
                     <value>
-                        <String fx:value="Pełna losowość"/>
+                        <String fx:value="Pełna predestynacja"/>
                     </value>
                 </ComboBox>
             </HBox>

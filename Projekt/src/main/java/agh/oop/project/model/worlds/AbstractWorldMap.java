@@ -1,6 +1,6 @@
 package agh.oop.project.model.worlds;
 
-import agh.oop.project.model.CsvWriter;
+import agh.oop.project.model.Writer;
 import agh.oop.project.model.Specifications;
 import agh.oop.project.model.Vector2d;
 import agh.oop.project.model.WorldElement;
@@ -44,7 +44,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void writeStatsToFile(CsvWriter writer, int day) throws IOException {
+    public void writeStatsToFile(Writer writer, int day) throws IOException {
         writer.write("\"" + day + "\",\"" + livingAnimalAmount + "\",\"" + plants.size() + "\",\"" + getFreeAreas() + "\",\"" + getPopularGenotype(genotypes) + "\",\"" + (float) round((float) sumOfLivingEnergy / livingAnimalAmount * 100) / 100 + "\",\"" + (float) round((float) sumOfDeadDays / deadAnimalAmount * 100) / 100 + "\",\"" + (float) round((float) sumOfKids / livingAnimalAmount * 100) / 100 + "\"");
     }
 
@@ -207,8 +207,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     public Animal getTheBestAnimal(List<Animal> animals) {
         List<Animal> copy = new ArrayList<>(animals);
         sortAnimals(copy);
-
-        if(copy.size()!=animals.size()) System.out.println("AAAA");
 
         return copy.getFirst();
     }

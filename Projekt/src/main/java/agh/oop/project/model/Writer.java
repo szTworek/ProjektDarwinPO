@@ -4,10 +4,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CsvWriter implements AutoCloseable {
+public class Writer implements AutoCloseable {
     private final BufferedWriter writer;
 
-    public CsvWriter(String fileName) throws IOException {
+    public Writer(String fileName) throws IOException {
         this.writer = new BufferedWriter(new FileWriter(fileName));
     }
 

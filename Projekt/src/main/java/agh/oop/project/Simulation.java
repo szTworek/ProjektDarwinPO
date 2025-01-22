@@ -1,9 +1,7 @@
 package agh.oop.project;
 
-import agh.oop.project.model.CsvWriter;
+import agh.oop.project.model.Writer;
 import agh.oop.project.model.Specifications;
-import agh.oop.project.model.Vector2d;
-import agh.oop.project.model.animals.Animal;
 import agh.oop.project.model.animals.CrazyAnimal;
 import agh.oop.project.model.animals.NormalAnimal;
 import agh.oop.project.model.app.ExtendedThread;
@@ -12,11 +10,9 @@ import agh.oop.project.model.worlds.ForestedEquator;
 import agh.oop.project.model.worlds.LiveGivingCorpse;
 import agh.oop.project.model.worlds.WorldMap;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Simulation implements Runnable {
 
@@ -28,7 +24,7 @@ public class Simulation implements Runnable {
     private int day = 1;
     private boolean running = true;
     private final boolean saveToCsv;
-    private CsvWriter csvWriter;
+    private Writer csvWriter;
 
     public Simulation(Specifications specifications, MapChangeListener presenter, boolean saveToCsv) {
         this.specifications = specifications;
@@ -101,11 +97,12 @@ public class Simulation implements Runnable {
     public void run() {
         try {
             if (saveToCsv) {
-                synchronized (fileNumber) {
-                    csvWriter = new CsvWriter("Dane_"+fileNumber+".csv");
-                    fileNumber++;
-                    csvWriter.writeHeader();
-                }
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmss-ddMMyy");
+                String timestamp = LocalDateTime.now().format(formatter);
+
+                csvWriter = new Writer("Dane" + fileNumber + "-" + timestamp + ".csv");
+                fileNumber++;
+                csvWriter.writeHeader();
             }
 
             while (!Thread.currentThread().isInterrupted() && running) {
@@ -117,7 +114,7 @@ public class Simulation implements Runnable {
 
                 dayCycle();
                 day++;
-                Thread.sleep(100);
+                Thread.sleep(500);
 
                 if (worldMap.getLivingAnimalAmount() == 0) break;
             }

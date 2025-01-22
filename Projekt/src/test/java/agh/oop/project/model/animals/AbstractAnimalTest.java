@@ -106,8 +106,6 @@ class AbstractAnimalTest {
         for (int i = 0; i < originalGenome.size(); i++) {
             if (!genome.get(i).equals(originalGenome.get(i))) actualNumOfMutations++;
         }
-        System.out.println(genome);
-        System.out.println(originalGenome);
         assertEquals(numOfMutations, actualNumOfMutations);
     }
 

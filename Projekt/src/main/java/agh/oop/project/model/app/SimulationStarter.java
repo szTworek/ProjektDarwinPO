@@ -2,7 +2,7 @@ package agh.oop.project.model.app;
 
 import agh.oop.project.Simulation;
 import agh.oop.project.model.Specifications;
-import agh.oop.project.model.Vector2d;
+import agh.oop.project.model.Writer;
 import agh.oop.project.model.worlds.WorldMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,11 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class SimulationStarter {
     @FXML
@@ -60,10 +59,13 @@ public class SimulationStarter {
     @FXML
     private Button largeSimulation;
 
+    private Writer specWriter;
+    List<Specifications> saved = new ArrayList<>();
+
 
     public void onSimulationStartClicked(ActionEvent e) throws IOException {
         boolean normalGrowth=growthType.getValue().equals("Zalesione równiki");
-        boolean normalGenome=genomeType.getValue().equals("Pełna losowość");
+        boolean normalGenome=genomeType.getValue().equals("Pełna predestynacja");
 
         Specifications specifications=new Specifications(
                 height.getValue(),
@@ -84,7 +86,43 @@ public class SimulationStarter {
         newWindow(specifications);
     }
 
+    public void saveSpecifications() throws IOException {
+
+        boolean normalGrowth=growthType.getValue().equals("Zalesione równiki");
+        boolean normalGenome=genomeType.getValue().equals("Pełna predestynacja");
+
+        specWriter.write(String.valueOf(height.getValue()));
+        specWriter.write(String.valueOf(width.getValue()));
+        specWriter.write(String.valueOf(startingAmountOfPlants.getValue()));
+        specWriter.write(String.valueOf(amountOfEnergyPerPlant.getValue()));
+        specWriter.write(String.valueOf(dailyPlantGrowth.getValue()));
+        specWriter.write(String.valueOf(normalGrowth ? 1 : 0));
+        specWriter.write(String.valueOf(startingAmountOfAnimals.getValue()));
+        specWriter.write(String.valueOf(startingEnergyForAnimals.getValue()));
+        specWriter.write(String.valueOf(healthyLimit.getValue()));
+        specWriter.write(String.valueOf(energyUsageForReproduction.getValue()));
+        specWriter.write(String.valueOf(minimalAmountOfMutations.getValue()));
+        specWriter.write(String.valueOf(maximalAmountOfMutations.getValue()));
+        specWriter.write(String.valueOf(genomeLength.getValue()));
+        specWriter.write(String.valueOf(normalGenome ? 1 : 0));
+
+    }
+
     public void newWindow(Specifications specifications) throws IOException {
+
+        specWriter = new Writer("saved_spec.txt");
+        Scanner reader = new Scanner("saved_spec.txt");
+
+        while (reader.hasNextLine()) {
+            List<Integer> spec = new ArrayList<>();
+            for(int i=0 ; i<14; i++){
+                if(!reader.hasNext()) throw(new IOException("Błąd w pliku z zapisanymi specyfikacjami")) ;
+                spec.set(i, Integer.parseInt(reader.nextLine()));
+            }
+            Specifications sp = new Specifications(spec.get(0), spec.get(1), spec.get(2),spec.get(3),spec.get(4),spec.get(5)==1,spec.get(6),spec.get(7),spec.get(8),spec.get(9),spec.get(10),spec.get(11),spec.get(12),spec.get(13)==1);
+
+            saved.add(sp);
+        }
 
         FXMLLoader loader = new FXMLLoader();
         Stage stage = new Stage();
@@ -99,12 +137,12 @@ public class SimulationStarter {
         configureStage(stage, viewRoot);
 
         stage.setOnCloseRequest(event -> {
-            System.out.println("Okno zostało zamknięte!");
             simulation.endSimulation();
         });
 
         stage.show();
     }
+
     private void configureStage(Stage stage, GridPane viewRoot) {
         var scene = new Scene(viewRoot,0.7*1792,0.7*1024 );
         scene.getStylesheets().add("simulationPageStyle.css");
@@ -177,17 +215,19 @@ public class SimulationStarter {
             }
         });
 
-
         maximalAmountOfMutations.valueProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue < minimalAmountOfMutations.getValue()) {
                 maximalAmountOfMutations.getValueFactory().setValue(oldValue);
             }
         });
+
+
         maximalAmountOfMutations.valueProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue > genomeLength.getValue()) {
                 maximalAmountOfMutations.getValueFactory().setValue(oldValue);
             }
         });
+
         genomeLength.valueProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue < maximalAmountOfMutations.getValue()) {
                 genomeLength.getValueFactory().setValue(oldValue);

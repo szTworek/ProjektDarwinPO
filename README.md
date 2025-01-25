@@ -13,7 +13,7 @@ Ogólna koncepcja to stworzenie symulacji ewolucji na świecie o parametrach wyb
 
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/1642fe2e-dfc5-47cd-b5e9-b9ed67ab9563" alt="spec" width="500">
+   <img src="Specyfikacje.png" width="500">
 </div>
 
 
@@ -26,7 +26,7 @@ Przyglądając się symulacji mamy również dostęp do szczegółowych informac
 
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/e03254ce-d60b-4352-b143-a633d7eef803" alt="spec" width="800">
+   <img src="DarwinWorld1.png" width="800">
 </div>
 
 Dostępne są także opcje zaznaczenia zwierząt o genotypie który aktualnie dominuje na mapie a także wyróżnienia pól na których rośliny preferują rosnąć.
@@ -34,7 +34,7 @@ Dostępne są także opcje zaznaczenia zwierząt o genotypie który aktualnie do
 
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/8b4d3d7a-4942-4e9c-889d-ed5937b31343" alt="spec" width="800">
+   <img src="DarwinWorld2.png" width="800">
 </div>
 
 
